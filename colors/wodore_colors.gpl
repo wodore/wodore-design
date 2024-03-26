@@ -1,0 +1,106 @@
+GIMP Palette
+Name: wodore_colors
+#
+ 52 103  81  primary
+157 217 210  secondary
+191 171  37  accent
+ 37 191  94  positive
+191  33  30  negative
+ 38 115 191  info
+255  60  56  warning
+ 17  33  25  dark
+ 10  20  15  dark-page
+ 28  28  28  black
+255 255 255  white
+# primary:
+143 214 183  primary-100
+109 197 159  primary-200
+77  178 134  primary-300
+64  140 107  primary-400
+52  103 81   primary-500
+42  91  70   primary-600
+34  78  59   primary-700
+26  66  49   primary-800
+19  52  38   primary-900
+# secondary:
+178 215 225  secondary-100
+170 215 222  secondary-200
+167 218 221  secondary-300
+163 219 217  secondary-400
+157 217 210  secondary-500
+104 197 193  secondary-600
+63  157 162  secondary-700
+41  98  107  secondary-800
+21  48  55   secondary-900
+# accent:
+232 197 99   accent-100
+227 192 79   accent-200
+222 189 58   accent-300
+216 187 39   accent-400
+191 171 37   accent-500
+173 149 31   accent-600
+153 128 25   accent-700
+132 106 21   accent-800
+111 86  16   accent-900
+# positive:
+140 233 199  positive-100
+110 227 176  positive-200
+80  221 150  positive-300
+50  215 122  positive-400
+37  191 94   positive-500
+33  171 93   positive-600
+29  149 89   positive-700
+25  128 83   positive-800
+21  107 75   positive-900
+# negative:
+242 172 171  negative-100
+235 129 127  negative-200
+229 90  87   negative-300
+223 51  48   negative-400
+191 33  30   negative-500
+172 29  27   negative-600
+150 26  23   negative-700
+128 22  20   negative-800
+110 19  17   negative-900
+# info:
+171 207 242  info-100
+132 184 235  info-200
+94  161 227  info-300
+57  138 218  info-400
+38  115 191  info-500
+30  97  164  info-600
+23  79  135  info-700
+17  61  105  info-800
+11  43  75   info-900
+# warning:
+255 133 147  warning-100
+255 112 124  warning-200
+255 97  105  warning-300
+255 77  79   warning-400
+255 60  56   warning-500
+255 15  19   warning-600
+230 0   11   warning-700
+184 0   15   warning-800
+143 0   17   warning-900
+# dark:
+49  94  71   dark-200
+38  74  56   dark-300
+28  54  41   dark-400
+17  33  25   dark-500
+16  30  23   dark-600
+14  27  20   dark-700
+# dark-page:
+10  20  15   dark-page-500
+# black:
+87  87  87   black-100
+74  74  74   black-200
+59  59  59   black-300
+43  43  43   black-400
+28  28  28   black-500
+15  15  15   black-600
+0   0   0    black-700
+# white:
+255 255 255  white-500
+252 252 252  white-600
+250 250 250  white-700
+247 247 247  white-800
