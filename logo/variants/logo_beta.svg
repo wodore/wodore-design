@@ -30,15 +30,15 @@
      units="px"
      showguides="false"
      inkscape:guide-bbox="true"
-     inkscape:zoom="22.627417"
-     inkscape:cx="35.377436"
-     inkscape:cy="6.1871843"
-     inkscape:window-width="2560"
-     inkscape:window-height="1375"
-     inkscape:window-x="2240"
+     inkscape:zoom="32"
+     inkscape:cx="28.1875"
+     inkscape:cy="37.71875"
+     inkscape:window-width="2240"
+     inkscape:window-height="1363"
+     inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g1"
+     inkscape:current-layer="g10"
      guidecolor="#a375ff"
      guideopacity="0.49803922"
      inkscape:lockguides="false"
@@ -946,7 +946,7 @@
            inkscape:label="bottom_arrow"
            sodipodi:nodetypes="ccccsccscscc" />
         <path
-           style="display:inline;fill:#408c6b;fill-opacity:1;stroke:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+           style="display:inline;fill:#6f5610;fill-opacity:1;stroke:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
            d="M 15.398658,9.3598458 29.054592,8.5353445 a 2.3875902,2.3875902 19.270372 0 1 1.741375,0.6088102 l 2.637177,2.3741823 a 1.0270319,1.0270319 86.23185 0 1 0.09417,1.429848 l -2.582044,3.026626 a 2.3486942,2.3486942 153.53059 0 1 -1.647254,0.820193 L 16.00281,17.586429 a 1.0139486,1.0139486 41.196544 0 1 -1.071476,-0.937892 l -0.457615,-6.23111 a 0.98707868,0.98707868 131.17229 0 1 0.924939,-1.0575812 z"
            id="path14-1"
            sodipodi:nodetypes="cccccc"
@@ -954,6 +954,18 @@
            inkscape:path-effect="#path-effect15-3"
            inkscape:original-d="m 14.400476,9.4201128 15.652298,-0.9450353 4.123563,3.7123365 -3.880086,4.548168 -15.291674,0.910269 z"
            inkscape:label="bottom_arrow_color" />
+        <text
+           xml:space="preserve"
+           style="font-size:9.75905px;display:inline;fill:#e8c563;fill-opacity:0.0893632;stroke-width:27.1086;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:54.217, 35.241"
+           x="10.179799"
+           y="34.446129"
+           id="text1"
+           transform="rotate(3.842708)"><tspan
+             sodipodi:role="line"
+             id="tspan1"
+             x="10.179799"
+             y="34.446129"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:9.75905px;font-family:'Roboto Condensed';-inkscape-font-specification:'Roboto Condensed, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#e8c563;fill-opacity:1;stroke-width:27.1086">beta</tspan></text>
         <path
            id="path14-1-8"
            style="display:inline;opacity:1;mix-blend-mode:lighten;fill:#ffffff;fill-opacity:0.04;stroke:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
