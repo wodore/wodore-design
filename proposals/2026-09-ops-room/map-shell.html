@@ -12,7 +12,7 @@
   :root, [data-theme="day"] {
     --page: #f6f9f7; --panel: #fdfefd; --panel-deep: #f6f9f7; --ridge: #dde7e0;
     --ink: #1c1c1c; --info: #29626b; --info-bright: #153037;
-    --gold: #846a15; --gold-fill: #bfab25; --avail: #198053; --restricted: #846a15;
+    --gold: #846a15; --gold-fill: #bfab25; --avail: #198053; --restricted: #8a4b1b;
     --closed: #bf211e; --unknown: #575757; --wash: rgba(0,0,0,0.06); --focus: #29626b;
     --scrim: rgba(246,249,247,.10); --halo: rgba(19,52,38,.7);
     --map-filter: none;
@@ -20,7 +20,7 @@
   [data-theme="night"] {
     --page: #0a140f; --panel: #112119; --panel-deep: #0e1b14; --ridge: #1c3629;
     --ink: #f2f7f4; --info: #9dd9d2; --info-bright: #a9f0d2;
-    --gold: #bfab25; --gold-fill: #bfab25; --avail: #25bf5e; --restricted: #e8c563;
+    --gold: #bfab25; --gold-fill: #bfab25; --avail: #25bf5e; --restricted: #f6ad4b;
     --closed: #f2acab; --unknown: #8a8a8a; --wash: rgba(255,255,255,.10); --focus: #9dd9d2;
     --scrim: rgba(10,20,15,.62); --halo: rgba(19,52,38,.7);
     --map-filter: saturate(.85);
@@ -86,8 +86,15 @@
   .rail-btn[aria-pressed="true"] .icon { color: #a9f0d2; }
   .rail-btn .count { margin-left: auto; font: 500 .68rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .04em; color: var(--info); font-variant-numeric: tabular-nums; }
   .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
-  .dot--free { background: #25bf5e; } .dot--restricted { background: #debd3a; }
-  .dot--closed { background: #bf211e; } .dot--unknown { background: #575757; }
+  .dot--unknown { background: #575757; }
+  .rail-btn--slim { min-height: 36px; padding: 6px 10px; font-size: .78rem; }
+  .occ-strip { display: flex; gap: 4px; padding: 0 4px 6px; }
+  .occ-seg { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 8px 2px; border-radius: 4px; min-height: 40px; justify-content: center; }
+  .occ-seg:hover { background: var(--wash); }
+  .occ-seg[aria-pressed="true"] { background: var(--panel-deep); box-shadow: inset 0 -2px 0 var(--gold-fill); }
+  .occ-dot { width: 14px; height: 14px; border-radius: 50%; }
+  .occ-count { font: 500 .68rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .04em; color: var(--info); font-variant-numeric: tabular-nums; }
+  .occ-scale { font: 500 .62rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--info); padding: 0 4px 8px; }
 
   /* ── map controls ── */
   .map-controls { position: absolute; right: 14px; top: 74px; z-index: 4; display: flex; flex-direction: column; gap: 6px; }
@@ -137,9 +144,9 @@
           <span class="beds beds--free">14 FREI</span>
         </button>
         <button class="result" role="option" aria-selected="false">
-          <span class="pin" style="background: #debd3a"></span>
+          <span class="pin" style="background: #db892a"></span>
           <span><span class="name">Turtmannhütte</span><br><span class="meta">2519 m · Turtmanntal, Wallis</span></span>
-          <span class="beds beds--restricted">3 FREI</span>
+          <span class="beds beds--restricted">MITTEL</span>
         </button>
         <button class="result" role="option" aria-selected="false">
           <span class="pin" style="background: #bf211e"></span>
@@ -161,11 +168,19 @@
 
   <nav class="rail" aria-label="Kartenfilter">
     <div class="cluster">
-      <h2>Hütten</h2>
-      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--free"></span>Bett frei<span class="count">126</span></button>
-      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--restricted"></span>Eingeschränkt<span class="count">48</span></button>
-      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--closed"></span>Geschlossen<span class="count">203</span></button>
-      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--unknown"></span>Unbekannt<span class="count">31</span></button>
+      <h2>Hütten · Verfügbarkeit</h2>
+      <div class="occ-strip" role="group" aria-label="Belegung filtern: frei bis voll">
+        <button class="occ-seg" aria-pressed="true" aria-label="frei"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-count">126</span></button>
+        <button class="occ-seg" aria-pressed="true" aria-label="wenig"><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-count">42</span></button>
+        <button class="occ-seg" aria-pressed="false" aria-label="mittel"><span class="occ-dot" style="background:#db892a"></span><span class="occ-count">31</span></button>
+        <button class="occ-seg" aria-pressed="false" aria-label="hoch"><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-count">19</span></button>
+        <button class="occ-seg" aria-pressed="false" aria-label="voll"><span class="occ-dot" style="background:#bf211e"></span><span class="occ-count">85</span></button>
+      </div>
+      <p class="occ-scale">frei → voll</p>
+      <div class="occ-extra">
+        <button class="rail-btn rail-btn--slim" aria-pressed="true"><span class="legend-dot" style="background:#50dd96"></span>frei, Zahl unklar<span class="count">23</span></button>
+        <button class="rail-btn rail-btn--slim" aria-pressed="false"><span class="legend-dot dot--unknown"></span>keine Daten<span class="count">54</span></button>
+      </div>
     </div>
     <div class="cluster">
       <h2>Aktivitäten</h2>

@@ -63,6 +63,12 @@
   .pane--day .link { color: #29626b; text-decoration-color: #998019; }
   .pane--night .link { color: #9dd9d2; text-decoration-color: #debd3a; }
 
+  .occ-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 10px 0; }
+  .occ-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+  .occ-name { font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+  .occ-row--fills { gap: 10px; }
+  .occ-note { font-size: .78rem; opacity: .75; margin-top: 8px; max-width: 60ch; }
+
   /* radius ramp */
   .radii { display: flex; gap: 14px; flex-wrap: wrap; }
   .rad { width: 84px; height: 60px; background: #346751; color: #f2f7f4; display: grid; place-items: center; font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; }
@@ -124,6 +130,24 @@
         <div class="spec-row"><span class="tag">Titel · SemiCond 500</span><span style="font:500 1.25rem/1.4 'Barlow Semi Condensed',sans-serif">Verfügbarkeit</span></div>
         <div class="spec-row"><span class="tag">Label · SemiCond 500 · 0.167em</span><span style="font:500 .75rem/2 'Barlow Semi Condensed',sans-serif;letter-spacing:.167em;text-transform:uppercase">Externe Buchung öffnen</span></div>
         <div class="spec-row"><span class="tag">Body · Barlow 400</span><span style="max-width:52ch;display:block">Das Aarbiwak steht auf dem Grat zwischen Vispertal und Mattertal und ist ein beliebtes Ziel für Ski- und Schneeschuhtouren.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">Belegungsskala · 7 Zustände</h2>
+    <div class="duo">
+      <div class="pane pane--day">
+        <div class="pane-label">Day · Text in Tiefschattierungen</div>
+        <div class="occ-row"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-name" style="color:#198053">frei</span><span class="occ-name" style="color:#198053">frei, Zahl unklar</span><span class="occ-name" style="color:#8a4b1b">wenig</span><span class="occ-name" style="color:#8a4b1b">mittel</span><span class="occ-name" style="color:#8a4b1b">hoch</span><span class="occ-name" style="color:#bf211e">voll</span><span class="occ-name" style="color:#575757">keine Daten</span></div>
+        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#50dd96"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
+        <p class="occ-note">Füllungen behalten ihre Schattierung in beiden Themen; nie Farbe allein — immer mit Zahl, Label oder Iconform.</p>
+      </div>
+      <div class="pane pane--night">
+        <div class="pane-label">Night · Text in Eisschattierungen</div>
+        <div class="occ-row"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-name" style="color:#25bf5e">frei</span><span class="occ-name" style="color:#50dd96">frei, Zahl unklar</span><span class="occ-name" style="color:#f6ad4b">wenig</span><span class="occ-name" style="color:#f6ad4b">mittel</span><span class="occ-name" style="color:#ffc064">hoch</span><span class="occ-name" style="color:#f2acab">voll</span><span class="occ-name" style="color:#fcfcfc">keine Daten</span></div>
+        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#50dd96"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
+        <p class="occ-note">Amber-Rampe: #ffd582 → #69391c, Hue zwischen Markengold und Warnkoralle.</p>
       </div>
     </div>
   </section>

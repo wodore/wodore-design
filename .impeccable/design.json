@@ -106,6 +106,33 @@
         "role": "semantic",
         "displayName": "Alpine Red",
         "canonical": "#bf211e"
+      },
+      "amber": {
+        "role": "semantic",
+        "displayName": "Amber",
+        "canonical": "#db892a",
+        "tonalRamp": [
+          "#69391c",
+          "#8a4b1b",
+          "#a95f1c",
+          "#c3731f",
+          "#db892a",
+          "#ea9a37",
+          "#f6ad4b",
+          "#ffc064",
+          "#ffd582"
+        ],
+        "note": "Occupancy middle steps; hue between brand gold and warning coral"
+      },
+      "amber-soft": {
+        "role": "semantic",
+        "displayName": "Amber Soft",
+        "canonical": "#f6ad4b"
+      },
+      "amber-deep": {
+        "role": "semantic",
+        "displayName": "Amber Deep",
+        "canonical": "#8a4b1b"
       }
     },
     "typographyMeta": {
@@ -173,7 +200,54 @@
         "availabilityText": "#25bf5e",
         "hoverWash": "rgba(255,255,255,0.1)"
       }
-    ]
+    ],
+    "occupancy": {
+      "states": [
+        {
+          "name": "free",
+          "fill": "#25bf5e",
+          "dayText": "#198053",
+          "nightText": "#25bf5e"
+        },
+        {
+          "name": "free_unknown",
+          "fill": "#50dd96",
+          "dayText": "#198053",
+          "nightText": "#50dd96"
+        },
+        {
+          "name": "low",
+          "fill": "#f6ad4b",
+          "dayText": "#8a4b1b",
+          "nightText": "#f6ad4b"
+        },
+        {
+          "name": "medium",
+          "fill": "#db892a",
+          "dayText": "#8a4b1b",
+          "nightText": "#f6ad4b"
+        },
+        {
+          "name": "high",
+          "fill": "#a95f1c",
+          "dayText": "#8a4b1b",
+          "nightText": "#ffc064"
+        },
+        {
+          "name": "full",
+          "fill": "#bf211e",
+          "dayText": "#bf211e",
+          "nightText": "#f2acab"
+        },
+        {
+          "name": "unknown",
+          "fill": "#575757",
+          "dayText": "#575757",
+          "nightText": "#fcfcfc"
+        }
+      ],
+      "note": "One scale for map pins, drawer badges, icons and month tiles. Never color alone. Replaces the ad-hoc Material hexes in overlay-huts.ts / WdAccommodationDay.vue / months.scss during implementation."
+    }
   },
   "components": [
     {
@@ -246,12 +320,12 @@
     "rules": [
       {
         "name": "The Head-Torch Rule",
-        "body": "Gold is a beam, not a wash. If gold covers more than a few percent of any surface, the design has lost the night, or washed out the day.",
+        "body": "Gold is a beam, not a wash. If gold covers more than a few percent of any surface, the design has lost the night, or washed out the day. Amber is data, not brand: the availability scale owns the amber ramp; brand gold never carries availability meaning.",
         "section": "colors"
       },
       {
         "name": "The Availability Rule",
-        "body": "Signal green and alpine red belong to bed availability truth. Never spend them on decoration; a green button that does not mean \"available\" dilutes the product's core signal.",
+        "body": "The occupancy scale (free, low, medium, high, full, unknown, free_unknown) is the product's core signal and owns its colors exclusively. Never spend green, amber or red on decoration, and never show a state by color alone: pair it with a count, label or icon shape (color-blind safety).",
         "section": "colors"
       },
       {

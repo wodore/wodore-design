@@ -50,11 +50,14 @@ mountain-hut region can be added without rework.
 - Themes: light and dark, light as default; manual toggle plus follow-system
   on first visit, persisted like the language setting.
 - Booking is external by design: Wodore is the planning and discovery layer;
-  providers (SAC, HRS, ...) close the transaction.
+  providers (HRS, FFCAM, ...) close the transaction.
 
 ## Capabilities and Constraints
 
 - Place search across huts and other places (peaks, cable cars, regions).
+- Occupancy vocabulary (7 states): free, low, medium, high, full, unknown,
+  free_unknown — one palette-native color scale across map pins, drawer
+  badges, icons and month tiles (see DESIGN.md).
 - Interactive MapLibre map: basemaps, overlays, map styles; hut pins with
   availability-driven states.
 - Hut detail: photos, facilities/meta, availability calendar, weather,
@@ -81,14 +84,13 @@ mountain-hut region can be added without rework.
   conditions". Light default. Binding.
 - Voice: warm alpine — inviting, a touch of mountain romance in
   marketing-adjacent copy — with precise, factual data language.
-  German master copy.
 
 ## Evidence on Hand
 
 - This repo: logo variants + exports, palette, product meta images, map and
   overlay assets.
 - Frontend repo: design spec `docs/specs/wd_design.md`, feature specs,
-  i18n copy, running app at https://wodo.re.
+  i18n copy, running app at <https://wodo.re>.
 - Guided init interview, 2026-09-23 (this file's source).
 - Absent (do not fabricate): testimonials, press, usage metrics.
 

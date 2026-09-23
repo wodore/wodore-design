@@ -28,6 +28,9 @@ colors:
   glacier-blue-ice: "#abcff2"
   warning-coral: "#ff3c38"
   warning-coral-deep: "#e6000b"
+  amber: "#db892a"
+  amber-soft: "#f6ad4b"
+  amber-deep: "#8a4b1b"
 typography:
   display:
     fontFamily: "Barlow Semi Condensed, Barlow, -apple-system, Helvetica Neue, sans-serif"
@@ -156,6 +159,36 @@ passes WCAG AA (4.5:1) on its surface — deep shades on Day, ice shades on
 Night.** Every value above already exists in the ramps except the four
 daylight neutrals below.
 
+### Availability / Occupancy Scale (new, approved)
+
+One palette-native scale for map pins, drawer badges, icons and month
+tiles. The middle steps use the new amber ramp (hue between brand gold
+and warning coral, chroma matched to the family); anchors stay on the
+existing positive/negative ramps.
+
+**Amber ramp (100–900):** #ffd582 · #ffc064 · #f6ad4b · #ea9a37 ·
+#db892a · #c3731f · #a95f1c · #8a4b1b · #69391c
+
+| State | Fill (both themes) | Day text | Night text |
+|---|---|---|---|
+| free | positive-500 #25bf5e | positive-800 #198053 (4.9) | positive-500 #25bf5e (6.9) |
+| free_unknown | positive-300 #50dd96 | positive-800 #198053 (4.9) | positive-300 #50dd96 (9.7) |
+| low | amber-300 #f6ad4b | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
+| medium | amber-500 #db892a | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
+| high | amber-700 #a95f1c | amber-800 #8a4b1b (6.7) | amber-200 #ffc064 (10.3) |
+| full | negative-500 #bf211e | negative-500 #bf211e (6.0) | negative-100 #f2acab (9.0) |
+| unknown | black-100 #575757 | black-100 #575757 (7.2) | white-600 #fcfcfc (16.3) |
+
+All ratios WCAG AA-verified. Hue carries the traffic reading (green →
+amber → red); lightness steps the severity inside amber; every state also
+carries a count, label or icon shape, never color alone.
+
+Pending code alignment (implementation phase): map pin ramp in
+`src/stores/map/utils/overlay-huts.ts` (currently Material hexes
+#33FF33/#99CC33/#FFA726/#E09321/#EF6C00/#D32F2F + #3366ff fallback →
+info-500), drawer badges in `WdAccommodationDay.vue` (#87b52d/#779F28/…),
+`src/css/months.scss` pastels, and the occupation icon SVGs' #e16f07.
+
 ### Primary
 - **Forest Green** (#346751): brand actions, active states, primary
   buttons — both themes. Hover deepens to #224e3b. Never text on Night
@@ -192,11 +225,14 @@ daylight neutrals below.
 ### Named Rules
 **The Head-Torch Rule.** Gold is a beam, not a wash. If gold covers more
 than a few percent of any surface, the design has lost the night — or
-washed out the day.
+washed out the day. Amber is data, not brand: the availability scale owns
+the amber ramp; brand gold never carries availability meaning.
 
-**The Availability Rule.** Signal green and alpine red belong to bed
-availability truth. Never spend them on decoration; a green button that
-does not mean "available" dilutes the product's core signal.
+**The Availability Rule.** The occupancy scale — free, low, medium, high,
+full, unknown, free_unknown — is the product's core signal and owns its
+colors exclusively. Never spend green, amber or red on decoration, and
+never show a state by color alone: pair it with a count, label or icon
+shape (color-blind safety).
 
 **The Two-Lights Rule.** Every surface, text and state token is defined for
 Day and Night together. A component that only works in one lighting
