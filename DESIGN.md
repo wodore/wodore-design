@@ -172,7 +172,7 @@ existing positive/negative ramps.
 | State | Fill (both themes) | Day text | Night text |
 |---|---|---|---|
 | free | positive-500 #25bf5e | positive-800 #198053 (4.9) | positive-500 #25bf5e (6.9) |
-| free_unknown | positive-300 #50dd96 | positive-800 #198053 (4.9) | positive-300 #50dd96 (9.7) |
+| free_unknown | muted green #7fab88 | positive-800 #198053 (4.9) | muted green #7fab88 (6.4) |
 | low | amber-300 #f6ad4b | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
 | medium | amber-500 #db892a | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
 | high | amber-700 #a95f1c | amber-800 #8a4b1b (6.7) | amber-200 #ffc064 (10.3) |
@@ -183,11 +183,29 @@ All ratios WCAG AA-verified. Hue carries the traffic reading (green →
 amber → red); lightness steps the severity inside amber; every state also
 carries a count, label or icon shape, never color alone.
 
+**free_unknown semantics:** some beds free, degree unknown — anything from
+low to high, only "not full" is certain. Color answer: muted sage green
+#7fab88 (same lightness as free, ~40% of its chroma): hue says "free
+family", desaturation says "unverified". Amber would fake a known degree;
+gray would fake "no data" (that is the unknown state). The icon carries
+the same reading: green disc + the X modifier from the unknown icon.
+
+**Visual-model check (Machado CVD simulation, severity 1.0):** under
+protanopia free↔low collapse (ΔE 0.024) and under deuteranopia high↔full
+collapse (ΔE 0.035). These pairs must never rely on hue alone: the
+occupation icons encode degree geometrically (fill wedges 0–100%), and
+pins/badges always pair color with count or label. free↔free_unknown
+under deuteranopia (ΔE 0.05) is benign — both mean "free family".
+
 Pending code alignment (implementation phase): map pin ramp in
 `src/stores/map/utils/overlay-huts.ts` (currently Material hexes
 #33FF33/#99CC33/#FFA726/#E09321/#EF6C00/#D32F2F + #3366ff fallback →
 info-500), drawer badges in `WdAccommodationDay.vue` (#87b52d/#779F28/…),
 `src/css/months.scss` pastels, and the occupation icon SVGs' #e16f07.
+The occupation source now includes `occupation_free_unknown.svg` (muted
+green disc + X); the six legacy icons still carry their original colors
+(#fafe72, #b3f942, #82cf06, #e16f07, #d32226, #cccccc) and realign to
+this scale during implementation.
 
 ### Primary
 - **Forest Green** (#346751): brand actions, active states, primary

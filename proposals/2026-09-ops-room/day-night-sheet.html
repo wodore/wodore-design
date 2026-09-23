@@ -69,6 +69,16 @@
   .occ-row--fills { gap: 10px; }
   .occ-note { font-size: .78rem; opacity: .75; margin-top: 8px; max-width: 60ch; }
 
+  /* on-map visual check: the scale over the real basemap */
+  .mapcheck { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .mappane { position: relative; border-radius: 8px; overflow: hidden; min-height: 130px; border: 1px solid #dde7e0; background: url('assets/map-backdrop.jpg') center / cover no-repeat; display: flex; align-items: center; justify-content: center; }
+  .mappane--day::after { content: ''; position: absolute; inset: 0; background: rgba(246,249,247,.10); }
+  .mappane--night::after { content: ''; position: absolute; inset: 0; background: rgba(10,20,15,.62); }
+  .mapdots { position: relative; z-index: 1; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 16px; }
+  .mappin { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .mappin .dot { width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 0 4px rgba(10,20,15,.55); }
+  .maplegend { position: absolute; left: 10px; top: 8px; z-index: 1; font: 500 .68rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #f2f7f4; text-shadow: 0 0 4px rgba(10,20,15,.8); }
+
   /* radius ramp */
   .radii { display: flex; gap: 14px; flex-wrap: wrap; }
   .rad { width: 84px; height: 60px; background: #346751; color: #f2f7f4; display: grid; place-items: center; font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; }
@@ -140,14 +150,30 @@
       <div class="pane pane--day">
         <div class="pane-label">Day · Text in Tiefschattierungen</div>
         <div class="occ-row"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-name" style="color:#198053">frei</span><span class="occ-name" style="color:#198053">frei, Zahl unklar</span><span class="occ-name" style="color:#8a4b1b">wenig</span><span class="occ-name" style="color:#8a4b1b">mittel</span><span class="occ-name" style="color:#8a4b1b">hoch</span><span class="occ-name" style="color:#bf211e">voll</span><span class="occ-name" style="color:#575757">keine Daten</span></div>
-        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#50dd96"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
-        <p class="occ-note">Füllungen behalten ihre Schattierung in beiden Themen; nie Farbe allein — immer mit Zahl, Label oder Iconform.</p>
+        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#7fab88"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
+        <p class="occ-note">Füllungen behalten ihre Schattierung in beiden Themen; nie Farbe allein — immer mit Zahl, Label oder Iconform. free_unknown = Betten frei, Grad unbekannt (wenig bis hoch möglich): entsättigtes Grün, X-Modifier.</p>
       </div>
       <div class="pane pane--night">
         <div class="pane-label">Night · Text in Eisschattierungen</div>
-        <div class="occ-row"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-name" style="color:#25bf5e">frei</span><span class="occ-name" style="color:#50dd96">frei, Zahl unklar</span><span class="occ-name" style="color:#f6ad4b">wenig</span><span class="occ-name" style="color:#f6ad4b">mittel</span><span class="occ-name" style="color:#ffc064">hoch</span><span class="occ-name" style="color:#f2acab">voll</span><span class="occ-name" style="color:#fcfcfc">keine Daten</span></div>
-        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#50dd96"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
-        <p class="occ-note">Amber-Rampe: #ffd582 → #69391c, Hue zwischen Markengold und Warnkoralle.</p>
+        <div class="occ-row"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-name" style="color:#25bf5e">frei</span><span class="occ-name" style="color:#7fab88">frei, Zahl unklar</span><span class="occ-name" style="color:#f6ad4b">wenig</span><span class="occ-name" style="color:#f6ad4b">mittel</span><span class="occ-name" style="color:#ffc064">hoch</span><span class="occ-name" style="color:#f2acab">voll</span><span class="occ-name" style="color:#fcfcfc">keine Daten</span></div>
+        <div class="occ-row occ-row--fills"><span class="occ-dot" style="background:#25bf5e"></span><span class="occ-dot" style="background:#7fab88"></span><span class="occ-dot" style="background:#f6ad4b"></span><span class="occ-dot" style="background:#db892a"></span><span class="occ-dot" style="background:#a95f1c"></span><span class="occ-dot" style="background:#bf211e"></span><span class="occ-dot" style="background:#575757"></span></div>
+        <p class="occ-note">Amber-Rampe: #ffd582 → #69391c, Hue zwischen Markengold und Warnkoralle. free_unknown: #7fab88, gleiche Helligkeit wie frei, ~40% Chroma.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">Auf der Karte · Basemap-Kontrast</h2>
+    <div class="mapcheck">
+      <div class="mappane mappane--day"><span class="maplegend">Day · Basemap hell</span>
+        <div class="mapdots">
+          <span class="mappin"><span class="dot" style="background:#25bf5e"></span></span><span class="mappin"><span class="dot" style="background:#7fab88"></span></span><span class="mappin"><span class="dot" style="background:#f6ad4b"></span></span><span class="mappin"><span class="dot" style="background:#db892a"></span></span><span class="mappin"><span class="dot" style="background:#a95f1c"></span></span><span class="mappin"><span class="dot" style="background:#bf211e"></span></span><span class="mappin"><span class="dot" style="background:#575757"></span></span>
+        </div>
+      </div>
+      <div class="mappane mappane--night"><span class="maplegend">Night · Basemap abgedunkelt</span>
+        <div class="mapdots">
+          <span class="mappin"><span class="dot" style="background:#25bf5e"></span></span><span class="mappin"><span class="dot" style="background:#7fab88"></span></span><span class="mappin"><span class="dot" style="background:#f6ad4b"></span></span><span class="mappin"><span class="dot" style="background:#db892a"></span></span><span class="mappin"><span class="dot" style="background:#a95f1c"></span></span><span class="mappin"><span class="dot" style="background:#bf211e"></span></span><span class="mappin"><span class="dot" style="background:#575757"></span></span>
+        </div>
       </div>
     </div>
   </section>

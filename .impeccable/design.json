@@ -133,6 +133,12 @@
         "role": "semantic",
         "displayName": "Amber Deep",
         "canonical": "#8a4b1b"
+      },
+      "muted-green": {
+        "role": "semantic",
+        "displayName": "Muted Green",
+        "canonical": "#7fab88",
+        "note": "free_unknown state; same L as positive-500, chroma cut to ~40%"
       }
     },
     "typographyMeta": {
@@ -211,9 +217,10 @@
         },
         {
           "name": "free_unknown",
-          "fill": "#50dd96",
+          "fill": "#7fab88",
           "dayText": "#198053",
-          "nightText": "#50dd96"
+          "nightText": "#7fab88",
+          "note": "Some beds free, degree unknown (low to high possible). Muted green: hue = free family, ~40% chroma = unverified. Icon: green disc + X modifier."
         },
         {
           "name": "low",
@@ -246,7 +253,8 @@
           "nightText": "#fcfcfc"
         }
       ],
-      "note": "One scale for map pins, drawer badges, icons and month tiles. Never color alone. Replaces the ad-hoc Material hexes in overlay-huts.ts / WdAccommodationDay.vue / months.scss during implementation."
+      "note": "One scale for map pins, drawer badges, icons and month tiles. Never color alone. Replaces the ad-hoc Material hexes in overlay-huts.ts / WdAccommodationDay.vue / months.scss during implementation.",
+      "visualModelCheck": "Machado CVD severity 1.0: protanopia free-low dE 0.024, deuteranopia high-full dE 0.035 -> those pairs never rely on hue alone (icon wedges + counts). free-free_unknown deutan dE 0.05 benign (same family)."
     }
   },
   "components": [
