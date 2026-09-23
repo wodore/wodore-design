@@ -209,11 +209,12 @@ Pending code alignment (implementation phase): map pin ramp in
 `src/stores/map/utils/overlay-huts.ts` (currently Material hexes
 #33FF33/#99CC33/#FFA726/#E09321/#EF6C00/#D32F2F + #3366ff fallback →
 info-500), drawer badges in `WdAccommodationDay.vue` (#87b52d/#779F28/…),
-`src/css/months.scss` pastels, and the occupation icon SVGs' #e16f07.
-The occupation source now includes `occupation_free_unknown.svg` (muted
-green disc + X); the six legacy icons still carry their original colors
-(#fafe72, #b3f942, #82cf06, #e16f07, #d32226, #cccccc) and realign to
-this scale during implementation.
+and `src/css/months.scss` pastels. The occupation icon source is
+realigned: disc = official state fill (identical to pins and badges),
+wedge = next-darker ramp step (low amber-500, medium amber-600, high
+amber-800 — fixing the original same-color wedge in high),
+`occupation_free_unknown.svg` added (muted green + X). The unknown icon's
+X stays #b3b3b3, now light-on-dark.
 
 ### Primary
 - **Forest Green** (#346751): brand actions, active states, primary
