@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wodore · Hüttenpanel · Design-Vorschlag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ── Alpine Ops Room proposal · wodore-design/DESIGN.md ─────────────── */
+  :root {
+    --night-pine: #0a140f;
+    --pine-panel: #112119;
+    --pine-deep: #0e1b14;
+    --pine-ridge: #1c3629;
+    --forest: #346751;
+    --forest-deep: #224e3b;
+    --forest-lift: #408c6b;
+    --turquoise: #9dd9d2;
+    --turquoise-muted: #6dc59f;
+    --ice-mint: #a9f0d2;
+    --gold: #bfab25;
+    --paper: #f2f7f4;
+    --signal: #25c15e;
+    --signal-text: #6ee3b0;
+    --restricted: #debd3a;
+    --closed-text: #f2acab;
+    --r-base: 6px;
+    --r-dialog: 20px;
+    --label: 500 0.72rem/1 'Roboto Condensed', Roboto, sans-serif;
+    --label-track: 0.14em;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { scrollbar-color: rgba(153,128,25,.5) var(--pine-deep); }
+  body {
+    font: 400 15px/1.55 'Roboto', -apple-system, 'Helvetica Neue', sans-serif;
+    color: var(--paper);
+    background: var(--night-pine);
+  }
+  ::selection { background: rgba(157,217,210,.28); color: var(--paper); }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--turquoise); outline-offset: 2px; border-radius: 4px; }
+  .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+  /* stage: drawer floats over the incumbent map canvas */
+  .stage {
+    min-height: 100vh;
+    background: #0b1310 url('assets/map-backdrop.jpg') center / cover no-repeat fixed;
+    display: flex; justify-content: flex-end; align-items: stretch;
+  }
+  .stage::before { content: ''; position: fixed; inset: 0; background: rgba(10,20,15,.55); pointer-events: none; }
+
+  .drawer {
+    position: relative; width: min(500px, 100vw); background: var(--pine-panel);
+    display: flex; flex-direction: column; overflow-y: auto; overscroll-behavior: contain;
+  }
+
+  /* ── hero: photo first, briefing overlaid ───────────────────────────── */
+  .hero { position: relative; flex: none; }
+  .hero img { display: block; width: 100%; height: 250px; object-fit: cover; }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,20,15,.5) 0%, rgba(10,20,15,0) 34%, rgba(17,33,25,.92) 96%);
+  }
+  .hero-bar { position: absolute; top: 10px; left: 10px; right: 10px; z-index: 1; display: flex; justify-content: space-between; }
+  .hero-bar .icon { filter: drop-shadow(0 0 4px rgba(10,20,15,.8)); }
+  .hero-head { position: absolute; left: 18px; right: 18px; bottom: 12px; z-index: 1; }
+  .hero-head h1 {
+    font: 300 2rem/1.1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .01em;
+    text-shadow: 0 0 4px rgba(19,52,38,.85);
+  }
+  .briefing {
+    display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 6px;
+    font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: .95rem; color: var(--ice-mint);
+    text-shadow: 0 0 4px rgba(19,52,38,.85);
+  }
+  .briefing .num { font-variant-numeric: tabular-nums; }
+
+  /* ── chips ───────────────────────────────────────────────────────────── */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 18px 2px; }
+  .chip {
+    font: var(--label); letter-spacing: var(--label-track); text-transform: uppercase;
+    color: var(--turquoise); background: var(--pine-deep);
+    border-radius: var(--r-base); padding: 6px 10px;
+  }
+  .chip--capacity { color: var(--paper); }
+
+  /* ── sections: instrument tick, no kicker labels ─────────────────────── */
+  section { padding: 20px 18px 4px; }
+  .sec-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+    font: 500 .95rem/1 'Roboto Condensed', Roboto, sans-serif;
+    letter-spacing: var(--label-track); text-transform: uppercase; color: var(--paper);
+  }
+  .sec-head::before { content: ''; width: 3px; height: 14px; background: var(--gold); border-radius: 1.5px; }
+  .sec-head small {
+    margin-left: auto; font: 400 .72rem/1 'Roboto Condensed', Roboto, sans-serif;
+    letter-spacing: .04em; text-transform: none; color: var(--turquoise-muted);
+  }
+
+  .lede { padding: 12px 18px 0; color: #cfe3da; }
+  .lede p.clampable:not(.open) {
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .more-btn {
+    font: var(--label); letter-spacing: var(--label-track); text-transform: uppercase;
+    color: var(--turquoise); padding: 6px 0;
+  }
+  .more-btn:hover { color: var(--ice-mint); }
+
+  /* ── availability: the product's soul, glove-sized ───────────────────── */
+  .months { display: flex; gap: 4px; margin-bottom: 12px; }
+  .month {
+    flex: 1; min-height: 40px; display: grid; place-items: center;
+    font: 500 .78rem/1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .08em;
+    color: var(--turquoise); background: var(--pine-deep); border-radius: var(--r-base);
+  }
+  .month:hover { color: var(--ice-mint); }
+  .month[aria-pressed="true"] { background: var(--forest); color: var(--paper); }
+  .month[aria-pressed="true"]::after { content: ''; display: block; width: 14px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 3px; }
+  .month { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .day {
+    min-height: 62px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    background: var(--pine-deep); border-radius: var(--r-base); padding: 8px 2px;
+    font-variant-numeric: tabular-nums; transition: background-color .2s ease;
+  }
+  .day:hover { background: var(--pine-ridge); }
+  .day .dow { font: var(--label); letter-spacing: .1em; color: var(--turquoise-muted); }
+  .day .dom { font: 500 1.15rem/1 'Roboto Condensed', Roboto, sans-serif; color: var(--paper); }
+  .day .beds { font: var(--label); letter-spacing: .06em; }
+  .day .bar { width: 22px; height: 3px; border-radius: 1.5px; background: var(--pine-ridge); position: relative; overflow: hidden; margin-top: 2px; }
+  .day .bar i { position: absolute; inset: 0; border-radius: inherit; }
+  .day--free .beds { color: var(--signal-text); }
+  .day--free .bar i { background: var(--signal); }
+  .day--restricted .beds { color: #e8c563; }
+  .day--restricted .bar i { background: var(--restricted); width: 55%; }
+  .day--closed .dom, .day--closed .beds { color: var(--closed-text); }
+  .day--closed .bar i { background: #bf211e; width: 8%; }
+  .avail-note { margin-top: 10px; font-size: .8rem; color: var(--turquoise-muted); }
+
+  /* ── weather: compact instrument read ────────────────────────────────── */
+  .weather { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .wday {
+    display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px;
+    background: var(--pine-deep); border-radius: var(--r-base);
+    font-variant-numeric: tabular-nums;
+  }
+  .wday .dow { font: var(--label); letter-spacing: .1em; color: var(--turquoise-muted); }
+  .wday .t { font: 500 1rem/1 'Roboto Condensed', Roboto, sans-serif; color: var(--paper); }
+  .wday .t small { color: var(--turquoise-muted); font-weight: 400; }
+
+  /* ── booking: hierarchy, reassurance, exit framing ───────────────────── */
+  .source {
+    display: block; width: 100%; text-align: left; background: var(--pine-deep);
+    border-radius: var(--r-base); padding: 14px 16px; transition: background-color .2s ease;
+  }
+  .source:hover { background: var(--pine-ridge); }
+  .source + .source { margin-top: 8px; }
+  .source-top { display: flex; align-items: center; gap: 10px; }
+  .source-name { font: 500 1.05rem/1.2 'Roboto Condensed', Roboto, sans-serif; }
+  .source-price { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--signal-text); font-size: .9rem; }
+  .source-echo { margin-top: 4px; font-size: .82rem; color: var(--turquoise-muted); }
+  .source-cta {
+    margin-top: 10px; display: inline-flex; align-items: center; gap: 8px;
+    font: var(--label); letter-spacing: var(--label-track); text-transform: uppercase;
+    background: var(--forest); color: var(--paper); border-radius: var(--r-base);
+    padding: 10px 16px; min-height: 40px; transition: background-color .2s ease;
+  }
+  .source:hover .source-cta { background: var(--forest-deep); }
+  .source-cta .icon { width: 16px; height: 16px; }
+  .source-exit { margin-top: 6px; font-size: .78rem; color: var(--turquoise-muted); }
+  .source--secondary .source-cta { background: transparent; box-shadow: inset 0 0 0 1px var(--pine-ridge); }
+  .source--secondary:hover .source-cta { background: rgba(157,217,210,.08); }
+
+  /* ── footer: demoted data, copy action ───────────────────────────────── */
+  .panel-foot {
+    margin-top: auto; padding: 18px; display: flex; align-items: center; gap: 10px;
+    font-size: .8rem; color: var(--turquoise-muted); font-variant-numeric: tabular-nums;
+  }
+  .copy-gps {
+    display: inline-flex; align-items: center; gap: 6px; color: var(--turquoise);
+    font: var(--label); letter-spacing: .08em; padding: 6px 10px; border-radius: var(--r-base);
+    background: var(--pine-deep);
+  }
+  .copy-gps:hover { color: var(--ice-mint); }
+  .copy-gps .icon { width: 14px; height: 14px; }
+  .attrib { margin-left: auto; font-size: .72rem; }
+
+  @media (max-width: 600px) {
+    .stage { display: block; }
+    .drawer { width: 100vw; min-height: 100vh; border-radius: 0; }
+    .days { grid-template-columns: repeat(4, 1fr); }
+    .weather { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <main class="drawer" aria-label="Hüttenpanel">
+
+    <div class="hero">
+      <img src="assets/hut-hero-0.jpg" alt="Aarbiwak über dem Vispertal">
+      <div class="hero-bar">
+        <button aria-label="Zurück zur Karte"><svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg></button>
+        <div style="display:flex; gap:4px;">
+          <button aria-label="Favorit" aria-pressed="true" style="color: var(--gold);"><svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 21s-7.5-4.9-10-9.3C.4 8.6 2 5 5.5 5c2 0 3.4 1.1 4.2 2.4L12 9l2.3-1.6C15.1 6.1 16.5 5 18.5 5 22 5 23.6 8.6 22 11.7 19.5 16.1 12 21 12 21Z"/></svg></button>
+          <button aria-label="Teilen"><svg class="icon" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+        </div>
+      </div>
+      <div class="hero-head">
+        <h1>Aarbiwak</h1>
+        <p class="briefing">
+          <span>▲ <span class="num">2731</span> m</span>
+          <span>☀ Sonne, <span class="num">10°</span></span>
+          <span>Vispertal, Wallis</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="chips">
+      <span class="chip"> SAC-Hütte</span>
+      <span class="chip chip--capacity">17 Plätze</span>
+      <span class="chip">Winterraum</span>
+    </div>
+
+    <div class="lede">
+      <p class="clampable">Das Aarbiwak steht auf dem Grat zwischen Vispertal und Mattertal und ist ein beliebtes
+        Ziel für Ski- und Schneeschuhtouren. Der einfache Winterraum bietet Platz für 17 Personen und ist
+        ganzjährig offen. Wasserstelle und Holzofen sind vorhanden, Verpflegung mitbringen. Der Aufstieg ab
+        Visperterminen dauert rund vier Stunden; im Winter sind Verhältnisse entscheidend.</p>
+      <button class="more-btn" aria-expanded="false">Mehr anzeigen</button>
+    </div>
+
+    <section aria-labelledby="sec-avail">
+      <h2 class="sec-head" id="sec-avail">Verfügbarkeit <small>Stand: vor 2 Std · sac-cas.ch</small></h2>
+      <div class="months" role="group" aria-label="Monat wählen">
+        <button class="month" aria-pressed="false">SEP</button>
+        <button class="month" aria-pressed="true">OKT</button>
+        <button class="month" aria-pressed="false">NOV</button>
+        <button class="month" aria-pressed="false">DEZ</button>
+        <button class="month" aria-pressed="false">JAN</button>
+        <button class="month" aria-pressed="false">FEB</button>
+      </div>
+      <div class="days">
+        <div class="day day--free"><span class="dow">FR</span><span class="dom">26</span><span class="beds">14 frei</span><span class="bar"><i></i></span></div>
+        <div class="day day--free"><span class="dow">SA</span><span class="dom">27</span><span class="beds">6 frei</span><span class="bar"><i style="width:40%"></i></span></div>
+        <div class="day day--free"><span class="dow">SO</span><span class="dom">28</span><span class="beds">11 frei</span><span class="bar"><i style="width:75%"></i></span></div>
+        <div class="day day--restricted"><span class="dow">MO</span><span class="dom">29</span><span class="beds">3 frei</span><span class="bar"><i></i></span></div>
+        <div class="day day--closed"><span class="dow">DI</span><span class="dom">30</span><span class="dom">–</span><span class="beds">zu</span><span class="bar"><i></i></span></div>
+        <div class="day day--closed"><span class="dow">MI</span><span class="dom">1</span><span class="dom">–</span><span class="beds">zu</span><span class="bar"><i></i></span></div>
+        <div class="day day--free"><span class="dow">DO</span><span class="dom">2</span><span class="beds">14 frei</span><span class="bar"><i></i></span></div>
+      </div>
+      <p class="avail-note">Frei ohne Gewähr · Mitgliederpreise im externen Booking sichtbar.</p>
+    </section>
+
+    <section aria-labelledby="sec-weather">
+      <h2 class="sec-head" id="sec-weather">Wetter <small>open-meteo.com</small></h2>
+      <div class="weather">
+        <div class="wday"><span class="dow">FR</span><svg class="icon" style="color:var(--restricted)" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><span class="t">10° <small>4°</small></span></div>
+        <div class="wday"><span class="dow">SA</span><svg class="icon" style="color:var(--turquoise-muted)" viewBox="0 0 24 24"><path d="M17.5 19a4.5 4.5 0 1 0-.4-9A6 6 0 0 0 5.3 12 3.5 3.5 0 0 0 6.5 19h11Z"/></svg><span class="t">8° <small>3°</small></span></div>
+        <div class="wday"><span class="dow">SO</span><svg class="icon" style="color:var(--turquoise-muted)" viewBox="0 0 24 24"><path d="M17.5 19a4.5 4.5 0 1 0-.4-9A6 6 0 0 0 5.3 12 3.5 3.5 0 0 0 6.5 19h11Z"/><path d="M8 19h9"/></svg><span class="t">6° <small>2°</small></span></div>
+        <div class="wday"><span class="dow">MO</span><svg class="icon" style="color:var(--ice-mint)" viewBox="0 0 24 24"><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/><circle cx="12" cy="12" r="4"/></svg><span class="t">9° <small>5°</small></span></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sec-book">
+      <h2 class="sec-head" id="sec-book">Buchen</h2>
+      <div class="source">
+        <div class="source-top">
+          <span class="source-name">SAC-CAS Booking</span>
+          <span class="source-price">ab CHF 45</span>
+        </div>
+        <p class="source-echo">Heute 14 Betten frei · Mitgliederrabatt</p>
+        <span class="source-cta">Externe Buchung öffnen
+          <svg class="icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+        </span>
+        <p class="source-exit">wodo.re verlässt · Buchung und Zahlung bei sac-cas.ch</p>
+      </div>
+      <div class="source source--secondary">
+        <div class="source-top">
+          <span class="source-name">Direkt kontaktieren</span>
+        </div>
+        <p class="source-echo">Warteliste oder Anfrage an den Hüttenwart</p>
+        <span class="source-cta">Nachricht schreiben
+          <svg class="icon" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+        </span>
+      </div>
+    </section>
+
+    <footer class="panel-foot">
+      <button class="copy-gps"><svg class="icon" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>GPS kopieren</button>
+      <span>46.5555, 8.1522</span>
+      <span class="attrib">Wetter: open-meteo.com</span>
+    </footer>
+  </main>
+</div>
+<script>
+  document.querySelector('.more-btn').addEventListener('click', function () {
+    const p = document.querySelector('.clampable');
+    const open = p.classList.toggle('open');
+    this.setAttribute('aria-expanded', open);
+    this.textContent = open ? 'Weniger anzeigen' : 'Mehr anzeigen';
+  });
+  document.querySelectorAll('.month').forEach(function (m) {
+    m.addEventListener('click', function () {
+      document.querySelectorAll('.month').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+      m.setAttribute('aria-pressed', 'true');
+    });
+  });
+</script>
+</body>
+</html>
