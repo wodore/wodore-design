@@ -30,37 +30,38 @@ colors:
   warning-coral-deep: "#e6000b"
 typography:
   display:
-    fontFamily: "Roboto Condensed, Roboto, -apple-system, Helvetica Neue, sans-serif"
+    fontFamily: "Barlow Semi Condensed, Barlow, -apple-system, Helvetica Neue, sans-serif"
     fontSize: "3.75rem"
     fontWeight: 300
     lineHeight: "3.75rem"
     letterSpacing: "-0.00833em"
   headline:
-    fontFamily: "Roboto Condensed, Roboto, -apple-system, Helvetica Neue, sans-serif"
+    fontFamily: "Barlow Semi Condensed, Barlow, -apple-system, Helvetica Neue, sans-serif"
     fontSize: "2.125rem"
     fontWeight: 400
     lineHeight: "2.5rem"
   title:
-    fontFamily: "Roboto Condensed, Roboto, -apple-system, Helvetica Neue, sans-serif"
+    fontFamily: "Barlow Semi Condensed, Barlow, -apple-system, Helvetica Neue, sans-serif"
     fontSize: "1.25rem"
     fontWeight: 500
     lineHeight: "2rem"
     letterSpacing: "0.0125em"
   body:
-    fontFamily: "Roboto, -apple-system, Helvetica Neue, sans-serif"
+    fontFamily: "Barlow, -apple-system, Helvetica Neue, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
     lineHeight: "1.5rem"
     letterSpacing: "0.03125em"
   label:
-    fontFamily: "Roboto Condensed, Roboto, -apple-system, Helvetica Neue, sans-serif"
+    fontFamily: "Barlow Semi Condensed, Barlow, -apple-system, Helvetica Neue, sans-serif"
     fontSize: "0.75rem"
     fontWeight: 500
     lineHeight: "2rem"
     letterSpacing: "0.16667em"
 rounded:
-  base: "6px"
-  dialog: "20px"
+  control: "4px"
+  card: "8px"
+  dialog: "16px"
 spacing:
   xs: "4px"
   sm: "8px"
@@ -70,18 +71,18 @@ components:
   button-primary:
     backgroundColor: "{colors.forest-green}"
     textColor: "{colors.paper-white}"
-    rounded: "{rounded.base}"
+    rounded: "{rounded.control}"
     typography: "{typography.label}"
   button-primary-hover:
     backgroundColor: "{colors.forest-green-deep}"
   card-surface-day:
     backgroundColor: "{colors.day-panel}"
     textColor: "{colors.day-ink}"
-    rounded: "{rounded.base}"
+    rounded: "{rounded.card}"
   card-surface-night:
     backgroundColor: "{colors.pine-panel}"
     textColor: "{colors.paper-white}"
-    rounded: "{rounded.base}"
+    rounded: "{rounded.card}"
 ---
 
 # Design System: Wodore
@@ -106,9 +107,10 @@ page, pine panels, ice tones for information — kind to dark-adapted eyes in
 a hut dorm at 5am. Same labels, same geometry, same rules; only the light
 changes.
 
-The instrument character comes from condensed uppercase labels, 6px corners,
-tonal (never shadow) depth, and the halo that keeps readings legible over
-map imagery in both conditions. Green and red are not decoration: they are
+The instrument character comes from Barlow Semi Condensed uppercase labels,
+the 4/8/16 radius ramp, tonal (never shadow) depth, and the halo that
+keeps readings legible over map imagery in both conditions. Green and red
+are not decoration: they are
 the availability truth, the product's core signal, in every lighting
 condition.
 
@@ -120,8 +122,10 @@ condition.
 - Green is identity and action; turquoise is orientation; gold is scarce —
   a beam, never a wash
 - Availability green/red have a semantic monopoly
-- Condensed uppercase instrument labels; Roboto body for content
-- Tonal layering only — no drop shadows; 6px corners, 20px for dialogs
+- Condensed uppercase instrument labels (Barlow Semi Condensed); Barlow
+  body for content
+- Tonal layering only — no drop shadows; radius ramp 4/8/16 (controls /
+  panels / dialogs), pills round
 - Halo text-shadow on anything sitting directly over imagery
 
 ## Colors
@@ -201,12 +205,19 @@ preference until the user chooses.
 
 ## Typography
 
-**Display Font:** Roboto Condensed (fallback Roboto, system sans)
-**Body Font:** Roboto (fallback system sans)
+**Display/Label Font:** Barlow Semi Condensed (fallback Barlow, system sans)
+**Body Font:** Barlow (fallback system sans)
 
-**Character:** condensed caps and near-light display weights read like
-engraved instrument labels; regular Roboto body keeps prose neutral and
-outdoor-legible. A utility pairing, deliberately not editorial.
+**Character:** Barlow is drawn from public signage and utility lettering —
+instrument DNA by birth — with a slightly rounded warmth that carries the
+alpine voice. One family, two widths: Semi Condensed speaks in the
+engraved-label voice (display, headings, uppercase controls, chips,
+numerals in tables), regular Barlow keeps prose neutral and
+outdoor-legible. Replaces Roboto/Roboto Condensed (the generic-Android
+pairing) throughout, self-hosted via Fontsource exactly like today.
+
+**Wordmark:** the "wo" + "dore" text wordmark follows the family — black
+"wo", gold "dore", Semi Condensed — beside the monochrome charcoal mark.
 
 ### Hierarchy
 - **Display** (300, 3.75rem/3.75rem, -0.008em): rare; hero moments only.
@@ -244,8 +255,9 @@ drop shadows — in either lighting condition.
 
 ## Shapes
 
-Compact instrument geometry: 6px base radius on controls, cards, menus;
-20px reserved for dialogs and sheets. Icons are line-based (Eva-style,
+Compact instrument geometry on a disciplined radius ramp: **4px** controls,
+chips, inputs and menus; **8px** cards and panels; **16px** dialogs and
+sheets; pills and map markers fully round. Icons are line-based (Eva-style,
 2px stroke) plus the custom `wd-` set; the logo mark is monochrome
 charcoal with a white mono variant for Night surfaces.
 
@@ -312,6 +324,7 @@ Elevation + current weather inline with the hut name (▲ 2731 m · ☀ Sonne,
 - **Don't** introduce drop shadows, side-strip borders, or gradients as
   depth in either theme.
 - **Don't** spend gold or the availability colors on decoration.
-- **Don't** exceed 6px radius outside dialogs/sheets (20px).
+- **Don't** mix off-ramp radii: 4px controls, 8px panels, 16px dialogs;
+  pills round. Nothing else.
 - **Don't** ship a component in only one theme — that includes demos and
   proposals.
