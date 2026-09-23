@@ -2,10 +2,8 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Provenance note: this record was initialized by an agent from repository
-> evidence (frontend code + specs, wodore-design assets) on 2025-09-23. Facts
-> marked *(inferred)* were not explicitly confirmed by the product owner;
-> confirm or correct them in a later `init` round.
+> Provenance: rebuilt via guided init interview with the product owner,
+> 2026-09-23. All fields below are confirmed unless marked otherwise.
 
 ## Platform
 
@@ -13,79 +11,101 @@ web
 
 ## Users
 
-Primary *(inferred)*: alpine tour planners — hikers, climbers and ski-tourers
-planning multi-day tours in the Alps. They research huts on a map, compare
-options, check live bed availability, favorite candidates and continue to
-booking. Used both at the planning desk (desktop web) and on the go
-(installable PWA, mobile). German-first audience (Swiss reality: de / fr / it,
-plus en).
+**Primary: alpine tour planners.** Hikers, climbers and ski-tourers planning
+multi-day tours. They compare huts on the map, check live bed availability,
+shortlist favorites and continue to booking via external deep links. Working
+at the planning desk (desktop web) and on tour (installable PWA, mobile).
+
+**Secondary: place explorers.** People browsing the map for interesting huts
+and places without a fixed plan — discovery-minded visitors the design must
+not alienate with planner-only density.
 
 ## Product Purpose
 
-Wodore (wodo.re) is a map-first web app to discover, evaluate and book alpine
-huts. Success means: a user finds the right hut for their tour, trusts its
-availability information, and reaches a booking.
+Wodore is a map-first web app to discover, evaluate and shortlist alpine
+huts. Success is planning success: users find and favorite the right huts,
+return during the season, and reach a booking. Bookings initiated at
+external providers are the lagging outcome, not the primary measure.
 
 ## Positioning
 
-*(inferred)* One living map over alpine huts whose availability is aggregated
-across external booking services (SAC, HRS, and others via hut-services),
-with deep links into booking. Neighboring portals are list-first or bound to
-a single operator's inventory.
+Two pillars a neighbor could not truthfully copy together:
+
+1. A living map whose hut availability aggregates across external booking
+   services (SAC, HRS, and others via hut-services), with clearly framed
+   deep links into booking.
+2. Richer, better-curated hut data (photos, facilities, meta) than
+   incumbent portals.
+
+Geographic scope: the Alps today — architected and designed so any
+mountain-hut region can be added without rework.
 
 ## Operating Context
 
-- Planning happens next to other tools: topographic maps, weather services,
-  tour planners. The app therefore leans on map layers, overlays and
-  weather *(inferred)*.
-- On tour, the PWA is used outdoors: glare, gloves, unstable connections.
+- Planning happens beside other tools: topographic maps, weather services,
+  tour planners — hence map layers, overlays and weather.
+- On tour: the PWA is used outdoors — glare, gloves, unstable connections.
 - UI languages: German (master copy), English, French, Italian; localized
   API data with fallback.
-- Auth (Zitadel OIDC) unlocks favorites and contribution features; payments
-  run through Stripe.
+- Themes: light and dark, light as default; manual toggle plus follow-system
+  on first visit, persisted like the language setting.
+- Booking is external by design: Wodore is the planning and discovery layer;
+  providers (SAC, HRS, ...) close the transaction.
 
 ## Capabilities and Constraints
 
-- Place search across huts and other places (peaks, cable cars, regions),
-  min. 2 characters, debounced, keyboard-navigable.
-- Interactive MapLibre map with selectable basemaps, overlays and map styles;
-  hut pins with availability-driven states.
-- Hut detail view: photos, facilities/meta, availability calendar, booking
-  entry (external booking services; some huts have no online booking).
-- Favorites, feedback, support, contribute and data-policy flows.
-- Constraints: Quasar component base (Vue 3, PWA build), data shape owned by
-  wodore-backend + hut-services libraries, dark theme incumbent.
-- Open product facts: none recorded yet.
+- Place search across huts and other places (peaks, cable cars, regions).
+- Interactive MapLibre map: basemaps, overlays, map styles; hut pins with
+  availability-driven states.
+- Hut detail: photos, facilities/meta, availability calendar, weather,
+  booking entry via external deep links (in-app checkout is not a commitment).
+- Favorites, feedback, support, contribute, data policy.
+- Auth (Zitadel OIDC); Stripe present for payments where applicable.
+- Constraints: Quasar (Vue 3) PWA component base; data shape owned by
+  wodore-backend + hut-services.
+- Offline-ready, not offline-first: cache-friendly patterns, nothing promised.
+- Open (future direction, explicitly undecided): support finding a good
+  tour in general, beyond single huts.
 
 ## Brand Commitments
 
-- Logo: variants maintained in this repo (`logo/`), incl. favicon set and
-  banner. Binding.
+- Logo: monochrome charcoal mark (`logo/wodore_logo_original.svg`,
+  `#1c1c1c` on `#0a140f`) + wordmark "wo" (black) "dore" (accent gold),
+  rendered as text; white mono variant (`favicon_mono_white`) for dark
+  surfaces. Binding.
 - Palette: wodore green (primary), turquoise (secondary), gold (accent) with
-  100–900 shades (`colors/wodore_palette.py`, mirrored in the frontend
-  `quasar.variables.scss`). Binding.
-- Dark, map-centric product character *(inferred binding)*: the UI recedes
-  behind the map; typography, layout, density and component treatment are
-  open to evolution.
-- Voice *(inferred)*: factual, compact, outdoor-practical; German master copy.
+  100–900 ramps; canonical source `colors/wodore_palette.py`. Binding —
+  including the approved adjustments: scalar/ramp realignment and the
+  pine-tinted daylight neutrals recorded in DESIGN.md.
+- Themes: light and dark are one system — "one instrument, two lighting
+  conditions". Light default. Binding.
+- Voice: warm alpine — inviting, a touch of mountain romance in
+  marketing-adjacent copy — with precise, factual data language.
+  German master copy.
 
 ## Evidence on Hand
 
-- This repo: logo variants and exports, color palette (GPL palette + script),
-  product meta images (`meta/`), product icons (`products/`), map assets.
-- Frontend repo: design spec `docs/specs/wd_design.md`, feature specs
-  (`wd_place_search.md`, `wd_design_place_details.md`, `wd_image_viewer.md`),
-  i18n copy (`src/i18n/locales/`), Histoire stories (`stories/`), running app
-  at https://wodo.re.
-- Absent (do not fabricate): testimonials, press, usage metrics, customer
-  references.
+- This repo: logo variants + exports, palette, product meta images, map and
+  overlay assets.
+- Frontend repo: design spec `docs/specs/wd_design.md`, feature specs,
+  i18n copy, running app at https://wodo.re.
+- Guided init interview, 2026-09-23 (this file's source).
+- Absent (do not fabricate): testimonials, press, usage metrics.
 
 ## Product Principles
 
-1. The map is the product — every UI element must earn space away from it.
-2. Availability truth first: bed status is the primary signal, never
-   decoration.
-3. Plan fast, decide deep: quick compare on the map, depth in the hut detail.
-4. Outdoor-robust over decorative: legible in glare, usable with gloves,
-   stable on weak connections.
-5. Swiss multilingual reality is the default, not an afterthought.
+1. The map is the product — every element must earn space away from it.
+2. Availability truth first: bed status is the primary signal; green and
+   red belong to it exclusively.
+3. Plan fast, decide deep: quick compare on the map, depth in the hut
+   detail.
+4. One instrument, two lighting conditions: daylight and night share
+   character, labels and rules; both must survive glare and gloves.
+5. Warm welcome, precise numbers: the voice is alpine and inviting, the
+   data is exact.
+
+## Accessibility & Inclusion
+
+WCAG 2.1 AA is the formal target (text contrast 4.5:1, visible focus,
+adequate target sizes). Outdoor realities — glare, gloves, unstable
+networks — are treated as accessibility contexts, not edge cases.

@@ -1,24 +1,33 @@
 ---
 name: Wodore
-description: Dark, map-first alpine hut discovery and booking surface
+description: Map-first alpine hut discovery — one instrument, two lighting conditions
 colors:
   forest-green: "#346751"
   forest-green-deep: "#224e3b"
+  forest-green-ice: "#8fd6b7"
   glacier-turquoise: "#9dd9d2"
-  glacier-turquoise-deep: "#3f9da2"
+  glacier-turquoise-deep: "#29626b"
   meadow-gold: "#bfab25"
+  meadow-gold-deep: "#846a15"
   meadow-gold-soft: "#e8c563"
   night-pine: "#0a140f"
   pine-panel: "#112119"
   pine-panel-deep: "#0e1b14"
-  pine-ridge: "#315e47"
+  pine-ridge: "#1c3629"
+  day-paper: "#f6f9f7"
+  day-panel: "#fdfefd"
+  day-ridge: "#dde7e0"
+  day-ink: "#1c1c1c"
+  paper-white: "#f2f7f4"
   ice-mint: "#a9f0d2"
-  signal-green: "#25c15e"
+  signal-green: "#25bf5e"
+  signal-green-deep: "#198053"
   alpine-red: "#bf211e"
+  alpine-red-soft: "#f2acab"
   glacier-blue: "#2673bf"
+  glacier-blue-ice: "#abcff2"
   warning-coral: "#ff3c38"
-  paper-white: "#ffffff"
-  charcoal: "#1c1c1c"
+  warning-coral-deep: "#e6000b"
 typography:
   display:
     fontFamily: "Roboto Condensed, Roboto, -apple-system, Helvetica Neue, sans-serif"
@@ -65,14 +74,11 @@ components:
     typography: "{typography.label}"
   button-primary-hover:
     backgroundColor: "{colors.forest-green-deep}"
-  toolbar-button:
-    backgroundColor: "transparent"
-    textColor: "{colors.paper-white}"
-  chip-hut-type:
-    backgroundColor: "{colors.pine-panel}"
-    textColor: "{colors.glacier-turquoise}"
+  card-surface-day:
+    backgroundColor: "{colors.day-panel}"
+    textColor: "{colors.day-ink}"
     rounded: "{rounded.base}"
-  card-surface:
+  card-surface-night:
     backgroundColor: "{colors.pine-panel}"
     textColor: "{colors.paper-white}"
     rounded: "{rounded.base}"
@@ -81,82 +87,126 @@ components:
 # Design System: Wodore
 
 > Scan-mode record of the incumbent frontend (wodore-frontend-quasar),
-> extracted 2025-09-23. North Star and atmosphere language are agent-proposed
-> (user declined the language round); confirm or rework via `/impeccable document`.
+> rebuilt 2026-09-23 after the guided product init. Dual-theme architecture
+> approved by the product owner; daylight neutrals are the approved palette
+> extension. Night tokens document the incumbent dark surfaces; day tokens
+> formalize the light mode the app actually ships today.
 
 ## Overview
 
-**Creative North Star: "The Alpine Ops Room"**
+**Creative North Star: "The Alpine Instrument — Day & Night"**
 
-Wodore's UI is a night-vision instrument panel for the mountains: a dark pine
-surface on which the map is the primary instrument and every control is a
-low-glare, high-legibility instrument reading. The palette comes straight from
-the alpine night: deep pine and pine-panel surfaces, a restrained forest green
-as the brand voice, glacier turquoise for orientation and information, and a
-rare gold accent that behaves like a head-torch beam: small, warm, pointed.
+Wodore's UI is a field instrument for the mountains: the map is the primary
+instrument, every control is a low-glare, high-legibility instrument
+reading, and the whole system lives in two lighting conditions of the same
+character. **Day** is warm paper: pine-tinted light surfaces, charcoal ink
+(the logo mark's own black-500), forest green actions, deep gold accents —
+readable in sunlight and glare. **Night** is the pine darkroom: night-pine
+page, pine panels, ice tones for information — kind to dark-adapted eyes in
+a hut dorm at 5am. Same labels, same geometry, same rules; only the light
+changes.
 
-Density is compact and operational. Roboto Condensed, uppercase labels and
-6px corners give controls a field-instrument feel rather than a consumer-app
-feel. Depth comes from tonal layering of the pine surfaces and the map
-itself, not from shadows.
+The instrument character comes from condensed uppercase labels, 6px corners,
+tonal (never shadow) depth, and the halo that keeps readings legible over
+map imagery in both conditions. Green and red are not decoration: they are
+the availability truth, the product's core signal, in every lighting
+condition.
 
 **Key Characteristics:**
 
-- Dark-first: page background Night Pine (#0a140f), panels Pine Panel (#112119)
-- Map is the canvas; chrome floats over it in compact panels
-- Green is identity, turquoise is orientation, gold is scarce emphasis
-- Condensed uppercase labels; generous Roboto body
-- Flat tonal surfaces, 6px corners, 20px only for dialogs
-- Halo text-shadow keeps labels legible over map imagery
+- Two themes, one character: Day (default) and Night share tokens, labels,
+  geometry and rules
+- The map is the canvas; chrome floats over it in compact panels
+- Green is identity and action; turquoise is orientation; gold is scarce —
+  a beam, never a wash
+- Availability green/red have a semantic monopoly
+- Condensed uppercase instrument labels; Roboto body for content
+- Tonal layering only — no drop shadows; 6px corners, 20px for dialogs
+- Halo text-shadow on anything sitting directly over imagery
 
 ## Colors
 
-The palette is a green-dominant alpine night scheme with cool turquoise
-information hues; every color exists in 100–900 ramps (source:
-`quasar.variables.scss`, mirrored in this repo's `colors/`).
+Brand ramps (100–900) are canonical in `colors/wodore_palette.py` and
+mirrored in the frontend `quasar.variables.scss`. One approved alignment is
+pending in code: the scalar overrides `$positive`, `$info`, `$black` must
+match their ramp-500 values (#25bf5e, #2673bf, #1c1c1c) — the ramps win.
+
+### The Shade-Role Rule (dual theme)
+
+| Role | Day (light) | Night (dark) |
+|---|---|---|
+| Page background | day-paper #f6f9f7 | night-pine #0a140f |
+| Panels / cards | day-panel #fdfefd | pine-panel #112119 (deep #0e1b14) |
+| Borders / ridges | day-ridge #dde7e0 | pine-ridge #1c3629 |
+| Body text | day-ink #1c1c1c | paper-white #f2f7f4 |
+| Brand fills (buttons, active) | forest-green #346751 (both themes) |
+| Information / links text | glacier-turquoise-deep #29626b | glacier-turquoise #9dd9d2 |
+| Gold accent text | meadow-gold-deep #846a15 | meadow-gold #bfab25 |
+| Availability text | signal-green-deep #198053 | signal-green #25bf5e |
+| Closed / error text | alpine-red #bf211e (passes on light) | alpine-red-soft #f2acab |
+| Info text | glacier-blue #2673bf | glacier-blue-ice #abcff2 |
+| Warning text | warning-coral-deep #e6000b | warning-coral #ff3c38 |
+
+**Fills keep their 500 shade in both themes; text picks the shade that
+passes WCAG AA (4.5:1) on its surface — deep shades on Day, ice shades on
+Night.** Every value above already exists in the ramps except the four
+daylight neutrals below.
 
 ### Primary
-- **Forest Green** (#346751): brand actions, active states, primary buttons.
-  The quiet center of the system; used sparingly enough to stay meaningful.
-- **Forest Green Deep** (#224e3b): hover/pressed extension of the brand.
+- **Forest Green** (#346751): brand actions, active states, primary
+  buttons — both themes. Hover deepens to #224e3b. Never text on Night
+  panels (2.55:1); Night text uses forest-green-ice #8fd6b7 (9.9:1).
 
 ### Secondary
-- **Glacier Turquoise** (#9dd9d2): orientation and information: links,
-  meta text, type chips, selected overlays. Cooler and quieter than the
-  brand green.
-- **Ice Mint** (#a9f0d2): icon tint (`icon` token), map control glyphs.
+- **Glacier Turquoise** (#9dd9d2 fill / #9dd9d2 Day-fail as text):
+  orientation and information — links, meta, type chips, selected states.
+  Day text: glacier-turquoise-deep #29626b (6.9:1). Night text: 500
+  (10.6:1 on pine).
+- **Ice Mint** (#a9f0d2): icon tint and glyph color, strongest on Night.
 
 ### Tertiary
-- **Meadow Gold** (#bfab25, soft #e8c563): scarce emphasis only: link
-  underlines (dotted, 800 shade at rest, 300 on hover), highlights.
-- **Signal Green** (#25c15e) / **Alpine Red** (#bf211e): availability
-  semantics (open/closed, beds). The product's core data signal.
-- **Glacier Blue** (#2673bf): information; **Warning Coral** (#ff3c38): alerts.
+- **Meadow Gold** (#bfab25): scarce emphasis — link underlines (dotted,
+  800 at rest, 300 on hover), the favorite heart, small instrument ticks.
+  Day text: meadow-gold-deep #846a15 (5.2:1) or 900 #6f5610 (7.0:1).
+- **Signal Green** (#25bf5e) / **Alpine Red** (#bf211e): availability
+  semantics only. Day text: signal-green-deep #198053 (4.9:1). Night
+  closed-text: alpine-red-soft #f2acab (9.0:1).
+- **Glacier Blue** (#2673bf) information; **Warning Coral** (#ff3c38)
+  alerts (Day text: #e6000b, 4.8:1).
 
 ### Neutral
-- **Night Pine** (#0a140f): page background behind the map.
-- **Pine Panel** (#112119) / **Pine Panel Deep** (#0e1b14): surfaces, cards,
-  drawers; **Pine Ridge** (#315e47): tonal ridge between layers.
-- **Paper White** (#ffffff): primary text on dark. **Charcoal** (#1c1c1c):
-  text on light surfaces.
+- **Day** (new, approved): day-paper #f6f9f7 page, day-panel #fdfefd
+  raised surfaces, day-ridge #dde7e0 borders, day-ink #1c1c1c text.
+  Pine-tinted rather than pure white: daylight mode carries the brand
+  instead of reading as a generic white app. day-ink deliberately equals
+  black-500 — the logo mark's own charcoal — tying chrome to identity.
+- **Night**: night-pine #0a140f page, pine-panel #112119 /
+  pine-panel-deep #0e1b14 surfaces, pine-ridge #315e47 tonal steps.
+- **Paper White** #f2f7f4: Night body text. **Charcoal** #1c1c1c: Day body
+  text.
 
 ### Named Rules
-**The Head-Torch Rule.** Gold is a beam, not a wash: link underlines and
-small highlights only. If gold covers more than a few percent of a surface,
-the design has lost the night.
+**The Head-Torch Rule.** Gold is a beam, not a wash. If gold covers more
+than a few percent of any surface, the design has lost the night — or
+washed out the day.
 
-**The Availability Rule.** Signal green and alpine red belong to bed/availability
-truth. Never spend them on decoration; a green button that doesn't mean
-"available" dilutes the product's core signal.
+**The Availability Rule.** Signal green and alpine red belong to bed
+availability truth. Never spend them on decoration; a green button that
+does not mean "available" dilutes the product's core signal.
+
+**The Two-Lights Rule.** Every surface, text and state token is defined for
+Day and Night together. A component that only works in one lighting
+condition is not done. Light is the default; Night follows the system
+preference until the user chooses.
 
 ## Typography
 
 **Display Font:** Roboto Condensed (fallback Roboto, system sans)
 **Body Font:** Roboto (fallback system sans)
 
-**Character:** Condensed caps and near-light display weights read like
-engraved instrument labels; the regular Roboto body keeps prose neutral and
-outdoor-legible. It is a utility pairing, deliberately not editorial.
+**Character:** condensed caps and near-light display weights read like
+engraved instrument labels; regular Roboto body keeps prose neutral and
+outdoor-legible. A utility pairing, deliberately not editorial.
 
 ### Hierarchy
 - **Display** (300, 3.75rem/3.75rem, -0.008em): rare; hero moments only.
@@ -164,7 +214,7 @@ outdoor-legible. It is a utility pairing, deliberately not editorial.
 - **Title** (500, 1.25rem/2rem): card and section titles.
 - **Body** (400, 1rem/1.5rem): running text.
 - **Label** (500, 0.75rem/2rem, +0.167em, uppercase): buttons, chips,
-  toolbar, overlines. The workhorse of the instrument character.
+  toolbar, overlines — the workhorse of the instrument character.
 
 ### Named Rules
 **The Instrument Label Rule.** Interactive controls speak in condensed
@@ -173,77 +223,95 @@ controls.
 
 ## Layout
 
-Map-first single-canvas architecture: the MapLibre map fills the viewport;
-chrome floats over it. Desktop: left-aligned search card (440px), floating
-toolbar, right-side content drawer for hut detail (drawer slides in 140ms
-ease-out). Mobile: the same elements collapse to full-screen dialogs (search
-dialog 100vw × 100vh, content as bottom sheet/dialog). Breakpoints:
-xs < 600px, sm < 769px, md < 1439px, lg < 1919px. Spacing follows Quasar's
-4px gutter scale (8/16/24px steps).
+Map-first single canvas: the MapLibre map fills the viewport, chrome
+floats over it. Desktop: left search card (440px), floating toolbar,
+right-side drawer for hut detail (140ms ease-out slide). Mobile: the same
+elements collapse to full-screen dialogs and sheets. Breakpoints: xs
+<600px, sm <769px, md <1439px, lg <1919px. Spacing follows Quasar's 4px
+gutter scale (8/16/24px). Controls target ≥40px; availability pills ≥60px
+(gloves).
 
 ## Elevation & Depth
 
-No shadow vocabulary: depth is tonal layering. Night Pine page → Pine Panel
-surfaces → Pine Ridge borders/tonal steps; floating chrome may use blur
-backdrops over the map. Dialogs get the only "lift" cue via the 20px radius.
+No shadow vocabulary in either theme: depth is tonal layering. Day:
+day-paper → day-panel, separated by day-ridge hairlines. Night: night-pine
+→ pine-panel → pine-panel-deep, with pine-ridge tonal steps. Dialogs and
+sheets get the only "lift" cue via the 20px radius.
 
 ### Named Rules
-**The Tonal Layer Rule.** To raise a surface, step the pine tone; do not
-add drop shadows.
+**The Tonal Layer Rule.** To raise a surface, step the tone; do not add
+drop shadows — in either lighting condition.
 
 ## Shapes
 
 Compact instrument geometry: 6px base radius on controls, cards, menus;
-20px reserved for dialogs and sheets. Icons are line-based Eva-style (Eva
-Icons) plus the custom `wd-` set; map glyphs favor outline over fill.
+20px reserved for dialogs and sheets. Icons are line-based (Eva-style,
+2px stroke) plus the custom `wd-` set; the logo mark is monochrome
+charcoal with a white mono variant for Night surfaces.
 
 ## Components
 
 ### Buttons
-- **Shape:** 6px radius, min-height 2.572em, uppercase condensed label.
-- **Primary:** Forest Green fill, white label.
-- **Hover / Focus:** deepened green (700); toolbar buttons take a
-  rgba(255,255,255,0.1) wash.
-- **Toolbar / Ghost:** transparent flat icon buttons (round dense), white
-  glyphs; active opacity 0.7 on press.
+- **Shape:** 6px radius, min-height 2.572em (≥40px targets), uppercase
+  condensed label.
+- **Primary:** Forest Green fill, paper-white label — both themes.
+- **Hover / Focus:** deepen to forest-green-deep; focus ring glacier
+  turquoise (deep on Day).
+- **Toolbar / Ghost:** transparent flat icon buttons; hover wash
+  rgba(black, 0.06) on Day, rgba(white, 0.1) on Night.
 
 ### Chips
-- **Hut type / meta chips:** Pine Panel fill, glacier turquoise text, 6px
-  radius, condensed label. Availability chips speak in signal green/red.
+- **Hut type / meta:** tonal panel fill, information-turquoise text (deep
+  on Day), 6px radius. Availability chips speak in signal green/red with
+  theme-correct text shades.
 
 ### Cards / Containers
 - **Corner Style:** 6px (dialogs 20px).
-- **Background:** Pine Panel (#112119) or Deep (#0e1b14) over the map.
-- **Shadow Strategy:** none; tonal separation from the map canvas.
+- **Background:** day-panel / pine-panel over the map.
+- **Shadow Strategy:** none — tonal separation from the map canvas.
 - **Internal Padding:** Quasar gutter steps (8/16/24px).
 
 ### Inputs / Fields
-- **Style:** dark filled fields on panel surfaces, 6px radius.
-- **Focus:** turquoise-tinted emphasis; `.wd-input-button` icon fields take a
-  white 10% wash on hover, 0.4 opacity when disabled.
+- **Style:** filled fields on panel surfaces, 6px radius; Day fields are
+  day-panel with day-ridge borders.
+- **Focus:** turquoise emphasis; icon-fields take the hover wash; disabled
+  at 0.4 opacity.
 
 ### Navigation
-- **Style:** floating compact toolbar over the map; flat round icon buttons;
-  condensed uppercase labels where text appears.
+- Floating compact toolbar over the map; flat round icon buttons; grouped
+  and labeled clusters (Hütten / Aktivitäten / Transport), ≤4 per cluster.
 
 ### Signature: Map Label Halo
 `.text-<c>--halo` (text-shadow: 0 0 4px rgba(color-700, 0.7)) keeps labels
-and numbers legible over any map imagery; the system's most distinctive
-utility.
+and numbers legible over any map imagery in both themes — the system's
+most distinctive utility. Over light imagery the halo uses the dark 700
+shade; over dark imagery the same rule holds.
+
+### Signature: The Briefing Header
+Elevation + current weather inline with the hut name (▲ 2731 m · ☀ Sonne,
+10°) — the at-a-glance go/no-go read that opens every hut panel.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep the map as the dominant surface; chrome floats in compact
-  panels at the edges.
-- **Do** use the halo effect for any text that sits directly on map imagery.
-- **Do** step pine tones (Night Pine → Panel → Deep) to express hierarchy.
+- **Do** define every surface, text and state for Day and Night together;
+  light is default, Night follows system then choice.
+- **Do** keep the map dominant; chrome floats in compact edge panels.
+- **Do** use the halo for any text over map imagery, both themes.
+- **Do** step tones (paper→panel / pine→panel) for hierarchy, never
+  shadows.
 - **Do** keep controls uppercase condensed; content sentence case.
-- **Do** respect the 100–900 ramps; pick existing shades over inventing
-  new values.
+- **Do** pick text shades by the Shade-Role table; verify 4.5:1 in the
+  theme you are styling.
 
 ### Don't:
-- **Don't** introduce drop shadows for elevation; the system is tonal.
-- **Don't** spend gold or the availability green/red on decoration.
+- **Don't** use 500 gold, turquoise, green or coral as text on Day
+  surfaces — they fail AA; use the deep (700–900) shades.
+- **Don't** use forest-green-500, alpine-red-500 or glacier-blue-500 as
+  text on Night panels — use the 100/ice shades.
+- **Don't** introduce drop shadows, side-strip borders, or gradients as
+  depth in either theme.
+- **Don't** spend gold or the availability colors on decoration.
 - **Don't** exceed 6px radius outside dialogs/sheets (20px).
-- **Don't** place large light surfaces over the map without a tonal bridge.
+- **Don't** ship a component in only one theme — that includes demos and
+  proposals.

@@ -1,16 +1,20 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2025-09-23T00:00:00Z",
+  "generatedAt": "2026-09-23T00:00:00Z",
   "title": "Design System: Wodore",
   "extensions": {
     "colorMeta": {
       "forest-green": { "role": "primary", "displayName": "Forest Green", "canonical": "#346751", "tonalRamp": ["#133426", "#1a4231", "#224e3b", "#2a5b46", "#346751", "#408c6b", "#4db286", "#6dc59f", "#8fd6b7"] },
       "glacier-turquoise": { "role": "secondary", "displayName": "Glacier Turquoise", "canonical": "#9dd9d2", "tonalRamp": ["#153037", "#29626b", "#3f9da2", "#68c5c1", "#9dd9d2", "#a3dbd9", "#a7dadd", "#aad7de", "#b2d7e1"] },
       "meadow-gold": { "role": "tertiary", "displayName": "Meadow Gold", "canonical": "#bfab25", "tonalRamp": ["#6f5610", "#846a15", "#998019", "#ad951f", "#bfab25", "#d8bb27", "#debd3a", "#e3c04f", "#e8c563"] },
+      "day-paper": { "role": "neutral", "displayName": "Day Paper", "canonical": "#f6f9f7", "note": "Pine-tinted daylight page; approved 2026-09-23" },
+      "day-panel": { "role": "neutral", "displayName": "Day Panel", "canonical": "#fdfefd" },
+      "day-ridge": { "role": "neutral", "displayName": "Day Ridge", "canonical": "#dde7e0" },
+      "day-ink": { "role": "neutral", "displayName": "Day Ink", "canonical": "#1c1c1c", "note": "Equals black-500, the logo mark charcoal" },
       "night-pine": { "role": "neutral", "displayName": "Night Pine", "canonical": "#0a140f" },
       "pine-panel": { "role": "neutral", "displayName": "Pine Panel", "canonical": "#112119", "tonalRamp": ["#0e1b14", "#101e17", "#112119", "#1c3629", "#264a38", "#315e47"] },
       "ice-mint": { "role": "neutral", "displayName": "Ice Mint", "canonical": "#a9f0d2" },
-      "signal-green": { "role": "semantic", "displayName": "Signal Green", "canonical": "#25c15e" },
+      "signal-green": { "role": "semantic", "displayName": "Signal Green", "canonical": "#25bf5e" },
       "alpine-red": { "role": "semantic", "displayName": "Alpine Red", "canonical": "#bf211e" }
     },
     "typographyMeta": {
@@ -27,85 +31,123 @@
       { "name": "sm", "value": "769px" },
       { "name": "md", "value": "1439px" },
       { "name": "lg", "value": "1919px" }
+    ],
+    "themes": [
+      {
+        "name": "day",
+        "default": true,
+        "page": "#f6f9f7",
+        "panel": "#fdfefd",
+        "border": "#dde7e0",
+        "text": "#1c1c1c",
+        "infoText": "#29626b",
+        "goldText": "#846a15",
+        "availabilityText": "#198053",
+        "hoverWash": "rgba(0,0,0,0.06)"
+      },
+      {
+        "name": "night",
+        "page": "#0a140f",
+        "panel": "#112119",
+        "border": "#1c3629",
+        "text": "#f2f7f4",
+        "infoText": "#9dd9d2",
+        "goldText": "#bfab25",
+        "availabilityText": "#25bf5e",
+        "hoverWash": "rgba(255,255,255,0.1)"
+      }
     ]
   },
   "components": [
     {
-      "name": "Primary Button",
+      "name": "Primary Button (both themes)",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Brand action button; uppercase condensed label on forest green.",
-      "html": "<button class=\"ds-btn-primary\">Book hut</button>",
-      "css": ".ds-btn-primary { background: #346751; color: #ffffff; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16667em; text-transform: uppercase; border: none; border-radius: 6px; padding: 8px 16px; min-height: 2.572em; cursor: pointer; transition: background-color 0.2s ease; } .ds-btn-primary:hover { background: #224e3b; } .ds-btn-primary:focus-visible { outline: 2px solid #9dd9d2; outline-offset: 2px; }"
+      "description": "Brand action button; uppercase condensed label on forest green; identical fill in Day and Night.",
+      "html": "<button class=\"ds-btn-primary\">Hütte merken</button>",
+      "css": ".ds-btn-primary { background: #346751; color: #f2f7f4; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.16667em; text-transform: uppercase; border: none; border-radius: 6px; padding: 10px 16px; min-height: 40px; cursor: pointer; transition: background-color 0.2s ease; } .ds-btn-primary:hover { background: #224e3b; } .ds-btn-primary:focus-visible { outline: 2px solid #9dd9d2; outline-offset: 2px; }"
     },
     {
-      "name": "Toolbar Button",
+      "name": "Toolbar Button Day",
       "kind": "button",
       "refersTo": "toolbar-button",
-      "description": "Flat round icon button floating over the map.",
-      "html": "<button class=\"ds-btn-toolbar\" aria-label=\"Layers\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/></svg></button>",
-      "css": ".ds-btn-toolbar { background: transparent; color: #ffffff; border: none; border-radius: 50%; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease, opacity 0.2s ease; } .ds-btn-toolbar:hover { background: rgba(255,255,255,0.1); } .ds-btn-toolbar:active { opacity: 0.7; } .ds-btn-toolbar:focus-visible { outline: 2px solid #9dd9d2; }"
+      "description": "Flat round icon button floating over the map, daylight variant.",
+      "html": "<button class=\"ds-btn-toolbar-day\" aria-label=\"Ebenen\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/></svg></button>",
+      "css": ".ds-btn-toolbar-day { background: #fdfefd; color: #1c1c1c; border: 1px solid #dde7e0; border-radius: 6px; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease; } .ds-btn-toolbar-day:hover { background: rgba(0,0,0,0.06); } .ds-btn-toolbar-day:focus-visible { outline: 2px solid #29626b; }"
     },
     {
-      "name": "Hut Type Chip",
+      "name": "Toolbar Button Night",
+      "kind": "button",
+      "refersTo": "toolbar-button",
+      "description": "Same control, night variant.",
+      "html": "<button class=\"ds-btn-toolbar-night\" aria-label=\"Ebenen\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><polygon points=\"12 2 2 7 12 12 22 7 12 2\"/><polyline points=\"2 17 12 22 22 17\"/><polyline points=\"2 12 12 17 22 12\"/></svg></button>",
+      "css": ".ds-btn-toolbar-night { background: #112119; color: #a9f0d2; border: none; border-radius: 6px; width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s ease; } .ds-btn-toolbar-night:hover { background: rgba(255,255,255,0.1); } .ds-btn-toolbar-night:focus-visible { outline: 2px solid #9dd9d2; }"
+    },
+    {
+      "name": "Hut Type Chip Day",
       "kind": "chip",
       "refersTo": "chip-hut-type",
-      "description": "Compact meta chip for hut classification.",
-      "html": "<span class=\"ds-chip-type\">SAC hut</span>",
-      "css": ".ds-chip-type { background: #112119; color: #9dd9d2; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 6px; padding: 2px 10px; display: inline-block; }"
+      "description": "Meta chip, daylight: deep turquoise text on paper panel.",
+      "html": "<span class=\"ds-chip-day\">SAC-Hütte</span>",
+      "css": ".ds-chip-day { background: #fdfefd; color: #29626b; border: 1px solid #dde7e0; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 6px; padding: 6px 10px; display: inline-block; }"
     },
     {
-      "name": "Availability Chip",
+      "name": "Hut Type Chip Night",
       "kind": "chip",
-      "description": "Bed availability signal; green = bookable, red = closed/full.",
-      "html": "<span class=\"ds-chip-avail ds-chip-avail--ok\">Beds available</span>",
-      "css": ".ds-chip-avail { font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 6px; padding: 2px 10px; display: inline-block; } .ds-chip-avail--ok { background: rgba(37,193,94,0.15); color: #25c15e; } .ds-chip-avail--no { background: rgba(191,33,30,0.15); color: #bf211e; }"
+      "refersTo": "chip-hut-type",
+      "description": "Meta chip, night: turquoise text on pine panel.",
+      "html": "<span class=\"ds-chip-night\">SAC-Hütte</span>",
+      "css": ".ds-chip-night { background: #0e1b14; color: #9dd9d2; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; border-radius: 6px; padding: 6px 10px; display: inline-block; }"
     },
     {
-      "name": "Map Surface Card",
-      "kind": "card",
-      "refersTo": "card-surface",
-      "description": "Floating panel over the map; tonal, no shadow.",
-      "html": "<div class=\"ds-card\"><span class=\"ds-card__title\">Aarbiwak</span><span class=\"ds-card__meta\">2,509 m · Vispertal</span></div>",
-      "css": ".ds-card { background: #112119; color: #ffffff; border-radius: 6px; padding: 16px; } .ds-card__title { display: block; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 1.25rem; font-weight: 500; letter-spacing: 0.0125em; } .ds-card__meta { display: block; margin-top: 4px; color: #9dd9d2; font-size: 0.875rem; }"
+      "name": "Availability Pill",
+      "kind": "chip",
+      "description": "Bed availability signal; text shade follows the theme (deep on Day, 500 on Night), fill stays tonal.",
+      "html": "<span class=\"ds-avail ds-avail--ok\">14 frei</span>",
+      "css": ".ds-avail { font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; border-radius: 6px; padding: 8px 12px; display: inline-block; font-variant-numeric: tabular-nums; } .ds-avail--ok { background: rgba(37,193,94,0.14); color: #198053; } [data-theme=\"night\"] .ds-avail--ok { color: #25bf5e; } .ds-avail--no { background: rgba(191,33,30,0.12); color: #bf211e; } [data-theme=\"night\"] .ds-avail--no { color: #f2acab; }"
     },
     {
       "name": "Halo Label",
       "kind": "custom",
-      "description": "Signature: map-over imagery label with brand halo.",
-      "html": "<span class=\"ds-halo\">Aarbiwak · 2,509 m</span>",
-      "css": ".ds-halo { color: #ffffff; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.875rem; letter-spacing: 0.02em; text-shadow: 0 0 4px rgba(26,66,49,0.7); }"
+      "description": "Signature: label legible over any map imagery, both themes.",
+      "html": "<span class=\"ds-halo\">Aarbiwak · 2731 m</span>",
+      "css": ".ds-halo { color: #f2f7f4; font-family: 'Roboto Condensed', Roboto, sans-serif; font-size: 0.875rem; letter-spacing: 0.02em; text-shadow: 0 0 4px rgba(19,52,38,0.7); }"
     }
   ],
   "narrative": {
-    "northStar": "The Alpine Ops Room",
-    "overview": "Wodore's UI is a night-vision instrument panel for the mountains: a dark pine surface on which the map is the primary instrument and every control is a low-glare, high-legibility instrument reading. The palette comes straight from the alpine night: deep pine and pine-panel surfaces, a restrained forest green as the brand voice, glacier turquoise for orientation and information, and a rare gold accent that behaves like a head-torch beam: small, warm, pointed. Density is compact and operational. Roboto Condensed, uppercase labels and 6px corners give controls a field-instrument feel rather than a consumer-app feel. Depth comes from tonal layering of the pine surfaces and the map itself, not from shadows.",
+    "northStar": "The Alpine Instrument — Day & Night",
+    "overview": "Wodore's UI is a field instrument for the mountains: the map is the primary instrument, every control is a low-glare, high-legibility instrument reading, and the whole system lives in two lighting conditions of the same character. Day is warm paper: pine-tinted light surfaces, charcoal ink, forest green actions, deep gold accents, readable in sunlight and glare. Night is the pine darkroom: night-pine page, pine panels, ice tones for information, kind to dark-adapted eyes. Same labels, same geometry, same rules; only the light changes. The instrument character comes from condensed uppercase labels, 6px corners, tonal (never shadow) depth, and the halo that keeps readings legible over map imagery in both conditions. Green and red are not decoration: they are the availability truth in every lighting condition.",
     "keyCharacteristics": [
-      "Dark-first: page background Night Pine (#0a140f), panels Pine Panel (#112119)",
-      "Map is the canvas; chrome floats over it in compact panels",
-      "Green is identity, turquoise is orientation, gold is scarce emphasis",
-      "Condensed uppercase labels; generous Roboto body",
-      "Flat tonal surfaces, 6px corners, 20px only for dialogs",
-      "Halo text-shadow keeps labels legible over map imagery"
+      "Two themes, one character: Day (default) and Night share tokens, labels, geometry and rules",
+      "The map is the canvas; chrome floats over it in compact panels",
+      "Green is identity and action; turquoise is orientation; gold is scarce",
+      "Availability green/red have a semantic monopoly",
+      "Condensed uppercase instrument labels; Roboto body for content",
+      "Tonal layering only, no drop shadows; 6px corners, 20px for dialogs",
+      "Halo text-shadow on anything over imagery"
     ],
     "rules": [
-      { "name": "The Head-Torch Rule", "body": "Gold is a beam, not a wash: link underlines and small highlights only. If gold covers more than a few percent of a surface, the design has lost the night.", "section": "colors" },
-      { "name": "The Availability Rule", "body": "Signal green and alpine red belong to bed/availability truth. Never spend them on decoration; a green button that doesn't mean \"available\" dilutes the product's core signal.", "section": "colors" },
+      { "name": "The Head-Torch Rule", "body": "Gold is a beam, not a wash. If gold covers more than a few percent of any surface, the design has lost the night, or washed out the day.", "section": "colors" },
+      { "name": "The Availability Rule", "body": "Signal green and alpine red belong to bed availability truth. Never spend them on decoration; a green button that does not mean \"available\" dilutes the product's core signal.", "section": "colors" },
+      { "name": "The Two-Lights Rule", "body": "Every surface, text and state token is defined for Day and Night together. A component that only works in one lighting condition is not done. Light is the default; Night follows the system preference until the user chooses.", "section": "colors" },
       { "name": "The Instrument Label Rule", "body": "Interactive controls speak in condensed uppercase labels (+0.167em tracking). Sentence case is for content, not controls.", "section": "typography" },
-      { "name": "The Tonal Layer Rule", "body": "To raise a surface, step the pine tone; do not add drop shadows.", "section": "elevation" }
+      { "name": "The Tonal Layer Rule", "body": "To raise a surface, step the tone; do not add drop shadows, in either lighting condition.", "section": "elevation" }
     ],
     "dos": [
-      "Do keep the map as the dominant surface; chrome floats in compact panels at the edges.",
-      "Do use the halo effect for any text that sits directly on map imagery.",
-      "Do step pine tones (Night Pine → Panel → Deep) to express hierarchy.",
+      "Do define every surface, text and state for Day and Night together; light is default, Night follows system then choice.",
+      "Do keep the map dominant; chrome floats in compact edge panels.",
+      "Do use the halo for any text over map imagery, both themes.",
+      "Do step tones (paper to panel / pine to panel) for hierarchy, never shadows.",
       "Do keep controls uppercase condensed; content sentence case.",
-      "Do respect the 100–900 ramps; pick existing shades over inventing new values."
+      "Do pick text shades by the Shade-Role table; verify 4.5:1 in the theme you are styling."
     ],
     "donts": [
-      "Don't introduce drop shadows for elevation; the system is tonal.",
-      "Don't spend gold or the availability green/red on decoration.",
+      "Don't use 500 gold, turquoise, green or coral as text on Day surfaces; they fail AA, use the deep (700-900) shades.",
+      "Don't use forest-green-500, alpine-red-500 or glacier-blue-500 as text on Night panels; use the 100/ice shades.",
+      "Don't introduce drop shadows, side-strip borders, or gradients as depth in either theme.",
+      "Don't spend gold or the availability colors on decoration.",
       "Don't exceed 6px radius outside dialogs/sheets (20px).",
-      "Don't place large light surfaces over the map without a tonal bridge."
+      "Don't ship a component in only one theme; that includes demos and proposals."
     ]
   }
 }
