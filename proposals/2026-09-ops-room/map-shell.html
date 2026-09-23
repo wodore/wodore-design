@@ -1,164 +1,112 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" data-theme="day">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wodore · Karten-Shell · Design-Vorschlag</title>
+<title>Wodore · Karten-Shell · Tag &amp; Nacht</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Barlow+Semi+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* ── Alpine Ops Room proposal · wodore-design/DESIGN.md ─────────────── */
-  :root {
-    --night-pine: #0a140f;
-    --pine-panel: #112119;
-    --pine-deep: #0e1b14;
-    --pine-ridge: #1c3629;
-    --forest: #346751;
-    --forest-deep: #224e3b;
-    --turquoise: #9dd9d2;
-    --turquoise-muted: #6dc59f;
-    --ice-mint: #a9f0d2;
-    --gold: #bfab25;
-    --paper: #f2f7f4;
-    --signal: #25c15e;
-    --restricted: #debd3a;
-    --closed: #bf211e;
-    --r-base: 6px;
-    --label: 500 0.7rem/1 'Roboto Condensed', Roboto, sans-serif;
-    --label-track: 0.14em;
+  /* ── The Alpine Instrument, Day & Night · DESIGN.md (wodore-design) ──── */
+  :root, [data-theme="day"] {
+    --page: #f6f9f7; --panel: #fdfefd; --panel-deep: #f6f9f7; --ridge: #dde7e0;
+    --ink: #1c1c1c; --info: #29626b; --info-bright: #153037;
+    --gold: #846a15; --gold-fill: #bfab25; --avail: #198053; --restricted: #846a15;
+    --closed: #bf211e; --unknown: #575757; --wash: rgba(0,0,0,0.06); --focus: #29626b;
+    --scrim: rgba(246,249,247,.10); --halo: rgba(19,52,38,.7);
+    --map-filter: none;
+  }
+  [data-theme="night"] {
+    --page: #0a140f; --panel: #112119; --panel-deep: #0e1b14; --ridge: #1c3629;
+    --ink: #f2f7f4; --info: #9dd9d2; --info-bright: #a9f0d2;
+    --gold: #bfab25; --gold-fill: #bfab25; --avail: #25bf5e; --restricted: #e8c563;
+    --closed: #f2acab; --unknown: #8a8a8a; --wash: rgba(255,255,255,.10); --focus: #9dd9d2;
+    --scrim: rgba(10,20,15,.62); --halo: rgba(19,52,38,.7);
+    --map-filter: saturate(.85);
   }
   * { box-sizing: border-box; margin: 0; }
-  html { scrollbar-color: rgba(153,128,25,.5) var(--pine-deep); }
-  body {
-    font: 400 15px/1.5 'Roboto', -apple-system, 'Helvetica Neue', sans-serif;
-    color: var(--paper); background: var(--night-pine); height: 100vh; overflow: hidden;
-  }
-  ::selection { background: rgba(157,217,210,.28); }
+  html { scrollbar-color: rgba(153,128,25,.5) var(--panel-deep); }
+  body { font: 400 15px/1.5 'Barlow', -apple-system, 'Helvetica Neue', sans-serif; color: var(--ink); background: var(--page); height: 100vh; overflow: hidden; transition: background-color .3s ease, color .3s ease; }
+  ::selection { background: rgba(157,217,210,.3); }
   button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
-  :focus-visible { outline: 2px solid var(--turquoise); outline-offset: 2px; border-radius: 4px; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
   .icon { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
 
-  .map { position: fixed; inset: 0; background: url('assets/map-backdrop.jpg') center / cover no-repeat; }
-  .map::after { content: ''; position: absolute; inset: 0; background: rgba(10,20,15,.38); }
+  .map { position: fixed; inset: 0; background: url('assets/map-backdrop.jpg') center / cover no-repeat; filter: var(--map-filter); }
+  .map::after { content: ''; position: absolute; inset: 0; background: var(--scrim); }
 
-  /* floating map label: the halo signature */
-  .map-label {
-    position: absolute; left: 58%; top: 38%; transform: translate(-50%, -50%);
-    display: flex; align-items: center; gap: 8px; padding: 8px 12px;
-    background: rgba(14,27,20,.92); border-radius: var(--r-base);
-    font-family: 'Roboto Condensed', Roboto, sans-serif;
-    text-shadow: 0 0 4px rgba(19,52,38,.7);
-  }
-  .map-label .pin { width: 12px; height: 12px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--signal); box-shadow: 0 0 4px rgba(19,52,38,.8); }
+  .map-label { position: absolute; left: 58%; top: 38%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; font-family: 'Barlow Semi Condensed', Barlow, sans-serif; }
+  .map-label .pin { width: 12px; height: 12px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #25bf5e; }
   .map-label strong { font-weight: 500; }
-  .map-label .beds { color: #6ee3b0; font-variant-numeric: tabular-nums; }
+  .map-label .beds { color: var(--avail); font-variant-numeric: tabular-nums; }
 
-  /* ── top bar ─────────────────────────────────────────────────────────── */
-  .topbar {
-    position: absolute; top: 0; left: 0; right: 0; z-index: 5;
-    display: flex; align-items: center; gap: 12px; padding: 10px 14px;
-    background: rgba(10,20,15,.88);
-  }
-  .logo { display: flex; align-items: center; gap: 10px; }
-  .logo img { height: 30px; width: auto; display: block; }
+  /* ── top bar ── */
+  .topbar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--panel); border-bottom: 1px solid var(--ridge); transition: background-color .3s ease; }
+  .logo { display: flex; align-items: center; gap: 1px; font: 500 1.5rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .01em; }
+  .logo .wo { color: #1c1c1c; }
+  [data-theme="night"] .logo .wo { color: #f2f7f4; }
+  .logo .dore { color: var(--gold-fill); }
+  .logo .mark { width: 26px; height: 30px; margin-left: 7px; }
 
   .search-wrap { position: relative; flex: 1; max-width: 460px; margin-left: auto; margin-right: auto; }
-  .search {
-    display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px;
-    background: var(--pine-panel); border-radius: var(--r-base);
-  }
-  .search .icon { color: var(--turquoise-muted); }
-  .search input {
-    flex: 1; background: none; border: 0; color: var(--paper);
-    font: 400 .95rem 'Roboto', sans-serif; caret-color: var(--turquoise); min-width: 0;
-  }
-  .search input::placeholder { color: var(--turquoise-muted); }
-  .search kbd {
-    font: var(--label); letter-spacing: .06em; color: var(--turquoise-muted);
-    background: var(--pine-deep); border-radius: 4px; padding: 4px 7px;
-  }
-  .date-chip {
-    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px;
-    background: var(--pine-panel); border-radius: var(--r-base);
-    font: 500 .8rem/1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .1em;
-    color: var(--paper); font-variant-numeric: tabular-nums;
-  }
-  .date-chip .icon { width: 17px; height: 17px; color: var(--turquoise-muted); }
-  .date-chip:hover { background: var(--pine-ridge); }
+  .search { display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 12px; background: var(--panel-deep); border: 1px solid var(--ridge); border-radius: 8px; }
+  .search .icon { color: var(--info); width: 18px; height: 18px; }
+  .search input { flex: 1; background: none; border: 0; color: var(--ink); font: 400 .95rem 'Barlow', sans-serif; caret-color: var(--focus); min-width: 0; }
+  .search input::placeholder { color: var(--info); }
+  .search kbd { font: 500 .68rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .06em; color: var(--info); background: var(--panel); border: 1px solid var(--ridge); border-radius: 4px; padding: 4px 7px; }
+  .date-chip { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 14px; background: var(--panel-deep); border: 1px solid var(--ridge); border-radius: 8px; font: 500 .8rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .date-chip .icon { width: 17px; height: 17px; color: var(--info); }
+  .date-chip:hover { background: var(--wash); }
+  .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--panel-deep); border: 1px solid var(--ridge); border-radius: 8px; color: var(--info); }
+  .theme-toggle:hover { background: var(--wash); }
 
-  /* search results: open state shown */
-  .results {
-    position: absolute; top: 52px; left: 0; right: 0; overflow: hidden;
-    background: var(--pine-panel); border-radius: var(--r-base);
-  }
-  .result {
-    display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
-    padding: 12px 14px; border-bottom: 1px solid var(--pine-ridge);
-  }
+  .results { position: absolute; top: 52px; left: 0; right: 0; overflow: hidden; background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; }
+  .result { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--ridge); }
   .result:last-child { border-bottom: 0; }
   .result .pin { width: 14px; height: 14px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); flex: none; }
-  .result .name { font: 500 1rem/1.2 'Roboto Condensed', Roboto, sans-serif; }
-  .result .meta { font-size: .8rem; color: var(--turquoise-muted); margin-top: 2px; font-variant-numeric: tabular-nums; }
-  .result .beds { margin-left: auto; font: var(--label); letter-spacing: .08em; white-space: nowrap; }
-  .result[aria-selected="true"] { background: var(--pine-deep); }
-  .result[aria-selected="true"] .name { color: var(--ice-mint); }
-  .result:hover { background: var(--pine-deep); }
-  .beds--free { color: #6ee3b0; } .beds--restricted { color: #e8c563; } .beds--closed { color: #f2acab; }
+  .result .name { font: 500 1rem/1.2 'Barlow Semi Condensed', Barlow, sans-serif; }
+  .result .meta { font-size: .8rem; color: var(--info); margin-top: 2px; font-variant-numeric: tabular-nums; }
+  .result .beds { margin-left: auto; font: 500 .7rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; white-space: nowrap; }
+  .result[aria-selected="true"], .result:hover { background: var(--wash); }
+  .result[aria-selected="true"] .name { color: var(--info-bright); }
+  .beds--free { color: var(--avail); } .beds--restricted { color: var(--restricted); } .beds--closed { color: var(--closed); }
 
-  /* ── left rail: grouped, labeled, ≤4 per cluster ─────────────────────── */
-  .rail { position: absolute; left: 14px; top: 74px; z-index: 4; display: flex; flex-direction: column; gap: 14px; width: 158px; }
-  .cluster { background: rgba(10,20,15,.88); border-radius: var(--r-base); padding: 10px; }
-  .cluster h2 { font: var(--label); letter-spacing: var(--label-track); text-transform: uppercase; color: var(--turquoise-muted); padding: 2px 4px 8px; }
-  .cluster h2::after { content: ''; display: block; width: 14px; height: 2px; background: var(--gold); border-radius: 1px; margin-top: 5px; }
-  .rail-btn {
-    display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px;
-    border-radius: var(--r-base); color: var(--paper); min-height: 40px;
-    font: 500 .82rem/1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .05em;
-    transition: background-color .2s ease;
-  }
-  .rail-btn:hover { background: rgba(157,217,210,.08); }
-  .rail-btn[aria-pressed="true"] { background: var(--forest); }
-  .rail-btn[aria-pressed="true"]:hover { background: var(--forest-deep); }
-  .rail-btn[aria-pressed="true"] .count { color: var(--paper); }
-  .rail-btn .icon { width: 20px; height: 20px; color: var(--ice-mint); }
-  .rail-btn .count { margin-left: auto; font: var(--label); color: var(--turquoise-muted); font-variant-numeric: tabular-nums; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; margin: 6px 16px 6px 6px; }
-  .dot--free { background: var(--signal); } .dot--restricted { background: var(--restricted); }
-  .dot--closed { background: var(--closed); } .dot--unknown { background: #575757; }
+  /* ── left rail: grouped, labeled, ≤4 per cluster ── */
+  .rail { position: absolute; left: 14px; top: 74px; z-index: 4; display: flex; flex-direction: column; gap: 12px; width: 168px; }
+  .cluster { background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; padding: 10px; }
+  .cluster h2 { font: 500 .7rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: var(--info); padding: 2px 4px 8px; }
+  .cluster h2::after { content: ''; display: block; width: 14px; height: 2px; background: var(--gold-fill); border-radius: 1px; margin-top: 5px; }
+  .rail-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border-radius: 4px; color: var(--ink); min-height: 40px; font: 500 .82rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .05em; transition: background-color .2s ease; }
+  .rail-btn:hover { background: var(--wash); }
+  .rail-btn[aria-pressed="true"] { background: #346751; color: #f2f7f4; }
+  .rail-btn[aria-pressed="true"]:hover { background: #224e3b; }
+  .rail-btn[aria-pressed="true"] .count { color: #f2f7f4; }
+  .rail-btn .icon { width: 20px; height: 20px; color: var(--info-bright); }
+  .rail-btn[aria-pressed="true"] .icon { color: #a9f0d2; }
+  .rail-btn .count { margin-left: auto; font: 500 .68rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .04em; color: var(--info); font-variant-numeric: tabular-nums; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+  .dot--free { background: #25bf5e; } .dot--restricted { background: #debd3a; }
+  .dot--closed { background: #bf211e; } .dot--unknown { background: #575757; }
 
-  /* ── map controls ────────────────────────────────────────────────────── */
+  /* ── map controls ── */
   .map-controls { position: absolute; right: 14px; top: 74px; z-index: 4; display: flex; flex-direction: column; gap: 6px; }
-  .ctl {
-    width: 44px; height: 44px; display: grid; place-items: center;
-    background: rgba(10,20,15,.88); border-radius: var(--r-base); color: var(--paper);
-    transition: background-color .2s ease;
-  }
-  .ctl:hover { background: var(--pine-ridge); }
-  .ctl .icon { color: var(--ice-mint); }
+  .ctl { width: 44px; height: 44px; display: grid; place-items: center; background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; color: var(--ink); transition: background-color .2s ease; }
+  .ctl:hover { background: var(--wash); }
+  .ctl .icon { color: var(--info-bright); }
 
-  .hint {
-    position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 4;
-    background: rgba(10,20,15,.88); border-radius: var(--r-base); padding: 8px 14px;
-    font: 500 .78rem/1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .08em; color: var(--ice-mint);
-    text-shadow: 0 0 4px rgba(19,52,38,.7);
-  }
+  .hint { position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 4; background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; padding: 8px 14px; font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; color: var(--ink); }
   .hint .num { color: var(--gold); font-variant-numeric: tabular-nums; }
 
-  /* ── mobile: rail collapses into a labeled bottom sheet trigger ───────── */
   .mobile-layers { display: none; }
   @media (max-width: 700px) {
     .rail, .hint { display: none; }
     .topbar { flex-wrap: wrap; }
     .search-wrap { order: 3; flex-basis: 100%; max-width: none; }
     .date-chip { margin-left: auto; }
-    .mobile-layers {
-      display: flex; align-items: center; gap: 10px; position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 4;
-      min-height: 48px; padding: 0 16px; background: rgba(10,20,15,.92); border-radius: var(--r-base);
-      font: 500 .85rem/1 'Roboto Condensed', Roboto, sans-serif; letter-spacing: .1em; text-transform: uppercase;
-    }
-    .mobile-layers .icon { color: var(--ice-mint); }
-    .mobile-layers span { color: var(--turquoise-muted); margin-left: auto; font-size: .72rem; }
+    .mobile-layers { display: flex; align-items: center; gap: 10px; position: absolute; left: 12px; right: 12px; bottom: 12px; z-index: 4; min-height: 48px; padding: 0 16px; background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; font: 500 .85rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .mobile-layers .icon { color: var(--info-bright); }
+    .mobile-layers span { color: var(--info); margin-left: auto; font-size: .72rem; }
   }
 </style>
 </head>
@@ -172,28 +120,29 @@
 
   <header class="topbar">
     <div class="logo">
-      <img src="assets/logo_banner_dark.png" alt="wodo.re">
+      <span class="wo">wo</span><span class="dore">dore</span>
+      <svg class="mark" viewBox="0 0 42 48" aria-hidden="true"><path fill="#1c1c1c" d="M21 2 6 27h9l-3 19 15-26h-9l3-18Z" fill-rule="evenodd"/></svg>
     </div>
 
     <div class="search-wrap">
       <div class="search" role="search">
         <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="search" placeholder="Hütte, Gipfel oder Ort suchen" value="aarb" aria-label="Ortssuche" autofocus>
+        <input type="search" placeholder="Hütte, Gipfel oder Ort suchen" value="aarb" aria-label="Ortssuche">
         <kbd>/</kbd>
       </div>
       <div class="results" role="listbox" aria-label="Suchresultate">
         <button class="result" role="option" aria-selected="true">
-          <span class="pin" style="background: var(--signal)"></span>
+          <span class="pin" style="background: #25bf5e"></span>
           <span><span class="name">Aarbiwak</span><br><span class="meta">2731 m · Vispertal, Wallis</span></span>
           <span class="beds beds--free">14 FREI</span>
         </button>
         <button class="result" role="option" aria-selected="false">
-          <span class="pin" style="background: var(--restricted)"></span>
+          <span class="pin" style="background: #debd3a"></span>
           <span><span class="name">Turtmannhütte</span><br><span class="meta">2519 m · Turtmanntal, Wallis</span></span>
           <span class="beds beds--restricted">3 FREI</span>
         </button>
         <button class="result" role="option" aria-selected="false">
-          <span class="pin" style="background: var(--closed)"></span>
+          <span class="pin" style="background: #bf211e"></span>
           <span><span class="name">Topalihütte</span><br><span class="meta">2674 m · Tal, Wallis</span></span>
           <span class="beds beds--closed">GESCHLOSSEN</span>
         </button>
@@ -204,15 +153,19 @@
       <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
       FR, 26. SEP
     </button>
+
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Farbschema wechseln">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+    </button>
   </header>
 
   <nav class="rail" aria-label="Kartenfilter">
     <div class="cluster">
       <h2>Hütten</h2>
-      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--free" style="margin:0"></span>Bett frei<span class="count">126</span></button>
-      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--restricted" style="margin:0"></span>Eingeschränkt<span class="count">48</span></button>
-      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--closed" style="margin:0"></span>Geschlossen<span class="count">203</span></button>
-      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--unknown" style="margin:0"></span>Unbekannt<span class="count">31</span></button>
+      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--free"></span>Bett frei<span class="count">126</span></button>
+      <button class="rail-btn" aria-pressed="true"><span class="legend-dot dot--restricted"></span>Eingeschränkt<span class="count">48</span></button>
+      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--closed"></span>Geschlossen<span class="count">203</span></button>
+      <button class="rail-btn" aria-pressed="false"><span class="legend-dot dot--unknown"></span>Unbekannt<span class="count">31</span></button>
     </div>
     <div class="cluster">
       <h2>Aktivitäten</h2>
@@ -243,7 +196,11 @@
   </button>
 
 <script>
-  document.querySelectorAll('.rail-btn, .month').forEach(function (b) {
+  function toggleTheme() {
+    const root = document.documentElement;
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'night' ? 'day' : 'night');
+  }
+  document.querySelectorAll('.rail-btn').forEach(function (b) {
     b.addEventListener('click', function () {
       b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
     });

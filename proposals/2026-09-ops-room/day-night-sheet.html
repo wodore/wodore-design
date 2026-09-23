@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wodore · Tag &amp; Nacht · Systemblatt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500&family=Barlow+Semi+Condensed:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --gold-fill: #bfab25; --forest: #346751; --forest-deep: #224e3b; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 400 15px/1.55 'Barlow', -apple-system, sans-serif; background: #e9efe b; background: #e9efeb; color: #1c1c1c; padding: 32px 24px 64px; }
+  ::selection { background: rgba(157,217,210,.35); }
+  h1, h2, h3 { font-family: 'Barlow Semi Condensed', Barlow, sans-serif; }
+  h1 { font-size: 2rem; font-weight: 300; letter-spacing: .01em; }
+  h1 strong { font-weight: 500; }
+  .sub { color: #29626b; margin: 4px 0 28px; max-width: 70ch; }
+  section { margin-top: 36px; }
+  .sec-title { display: flex; align-items: center; gap: 10px; font-size: .95rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 14px; }
+  .sec-title::before { content: ''; width: 3px; height: 14px; background: var(--gold-fill); border-radius: 1.5px; }
+
+  .duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pane { border-radius: 8px; padding: 18px; border: 1px solid transparent; }
+  .pane-label { font: 500 .7rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 12px; }
+  .pane--day { background: #fdfefd; border-color: #dde7e0; color: #1c1c1c; }
+  .pane--day .pane-label { color: #29626b; }
+  .pane--night { background: #112119; border-color: #1c3629; color: #f2f7f4; }
+  .pane--night .pane-label { color: #9dd9d2; }
+
+  /* palette swatch rows */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .swatch { border-radius: 4px; overflow: hidden; border: 1px solid rgba(128,128,128,.25); }
+  .swatch .chipc { height: 44px; }
+  .swatch .meta { padding: 6px 8px; font: 500 .62rem/1.4 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .04em; text-transform: uppercase; }
+  .meta small { display: block; font-weight: 400; text-transform: none; letter-spacing: 0; opacity: .75; }
+
+  /* type specimen */
+  .spec-row { margin: 10px 0; }
+  .spec-row .tag { font: 500 .62rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .6; display: block; margin-bottom: 2px; }
+  .wordmark { font: 500 2rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .01em; }
+  .pane--day .wordmark .wo { color: #1c1c1c; } .pane--day .wordmark .dore { color: #846a15; }
+  .pane--night .wordmark .wo { color: #f2f7f4; } .pane--night .wordmark .dore { color: #bfab25; }
+
+  /* components */
+  .comp-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 12px 0; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font: 500 .72rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; background: var(--forest); color: #f2f7f4; border: 0; border-radius: 4px; padding: 10px 16px; min-height: 40px; cursor: pointer; }
+  .btn:hover { background: var(--forest-deep); }
+  .btn--ghost { background: transparent; color: inherit; box-shadow: inset 0 0 0 1px currentColor; opacity: .9; }
+  .btn--ghost:hover { background: rgba(128,128,128,.12); }
+  .chip { font: 500 .7rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; border-radius: 4px; padding: 6px 10px; }
+  .pane--day .chip { background: #f6f9f7; border: 1px solid #dde7e0; color: #29626b; }
+  .pane--night .chip { background: #0e1b14; color: #9dd9d2; }
+  .pill { font: 500 .72rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; border-radius: 4px; padding: 10px 14px; min-height: 40px; display: inline-flex; align-items: center; font-variant-numeric: tabular-nums; }
+  .pill--free { background: rgba(37,193,94,.13); }
+  .pane--day .pill--free { color: #198053; } .pane--night .pill--free { color: #25bf5e; }
+  .pill--closed { background: rgba(191,33,30,.11); }
+  .pane--day .pill--closed { color: #bf211e; } .pane--night .pill--closed { color: #f2acab; }
+  .field { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 12px; border-radius: 8px; font-size: .95rem; }
+  .pane--day .field { background: #f6f9f7; border: 1px solid #dde7e0; color: #29626b; }
+  .pane--night .field { background: #0e1b14; border: 1px solid #1c3629; color: #9dd9d2; }
+  .link { text-decoration: underline dotted; text-underline-offset: 3px; }
+  .pane--day .link { color: #29626b; text-decoration-color: #998019; }
+  .pane--night .link { color: #9dd9d2; text-decoration-color: #debd3a; }
+
+  /* radius ramp */
+  .radii { display: flex; gap: 14px; flex-wrap: wrap; }
+  .rad { width: 84px; height: 60px; background: #346751; color: #f2f7f4; display: grid; place-items: center; font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .08em; }
+
+  @media (max-width: 700px) { .duo { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <h1><strong>wo</strong>dore · Das alpine Instrument — <strong>Tag &amp; Nacht</strong></h1>
+  <p class="sub">Systemblatt zu DESIGN.md: eine Marke, zwei Lichtverhältnisse. Day (Standard) und Night teilen Tokens, Beschriftung, Geometrie und Regeln. Füllungen behalten ihre 500-Schattierung; Text wählt die kontraststarke Schattierung (Day 700–900, Night 100–300, WCAG AA geprüft).</p>
+
+  <section>
+    <h2 class="sec-title">Palette · Flächen &amp; Text</h2>
+    <div class="duo">
+      <div class="pane pane--day">
+        <div class="pane-label">Day · Standard</div>
+        <div class="swatches">
+          <div class="swatch"><div class="chipc" style="background:#f6f9f7"></div><div class="meta">day-paper<small>#f6f9f7</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#fdfefd"></div><div class="meta">day-panel<small>#fdfefd</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#dde7e0"></div><div class="meta">day-ridge<small>#dde7e0</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#1c1c1c"></div><div class="meta">day-ink<small>#1c1c1c</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#29626b"></div><div class="meta">info-text<small>#29626b</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#846a15"></div><div class="meta">gold-text<small>#846a15</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#198053"></div><div class="meta">frei-text<small>#198053</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#bf211e"></div><div class="meta">zu-text<small>#bf211e</small></div></div>
+        </div>
+      </div>
+      <div class="pane pane--night">
+        <div class="pane-label">Night</div>
+        <div class="swatches">
+          <div class="swatch"><div class="chipc" style="background:#0a140f"></div><div class="meta">night-pine<small>#0a140f</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#112119"></div><div class="meta">pine-panel<small>#112119</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#1c3629"></div><div class="meta">pine-ridge<small>#1c3629</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#f2f7f4"></div><div class="meta">paper-white<small>#f2f7f4</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#9dd9d2"></div><div class="meta">info-text<small>#9dd9d2</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#bfab25"></div><div class="meta">gold-text<small>#bfab25</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#25bf5e"></div><div class="meta">frei-text<small>#25bf5e</small></div></div>
+          <div class="swatch"><div class="chipc" style="background:#f2acab"></div><div class="meta">zu-text<small>#f2acab</small></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">Typografie · Barlow</h2>
+    <div class="duo">
+      <div class="pane pane--day">
+        <div class="pane-label">Day</div>
+        <p class="wordmark spec-row"><span class="wo">wo</span><span class="dore">dore</span></p>
+        <div class="spec-row"><span class="tag">Display · SemiCond 300</span><span style="font:300 2.2rem/1.1 'Barlow Semi Condensed',sans-serif">Aarbiwak</span></div>
+        <div class="spec-row"><span class="tag">Titel · SemiCond 500</span><span style="font:500 1.25rem/1.4 'Barlow Semi Condensed',sans-serif">Verfügbarkeit</span></div>
+        <div class="spec-row"><span class="tag">Label · SemiCond 500 · 0.167em</span><span style="font:500 .75rem/2 'Barlow Semi Condensed',sans-serif;letter-spacing:.167em;text-transform:uppercase">Externe Buchung öffnen</span></div>
+        <div class="spec-row"><span class="tag">Body · Barlow 400</span><span style="max-width:52ch;display:block">Das Aarbiwak steht auf dem Grat zwischen Vispertal und Mattertal und ist ein beliebtes Ziel für Ski- und Schneeschuhtouren.</span></div>
+      </div>
+      <div class="pane pane--night">
+        <div class="pane-label">Night</div>
+        <p class="wordmark spec-row"><span class="wo">wo</span><span class="dore">dore</span></p>
+        <div class="spec-row"><span class="tag">Display · SemiCond 300</span><span style="font:300 2.2rem/1.1 'Barlow Semi Condensed',sans-serif">Aarbiwak</span></div>
+        <div class="spec-row"><span class="tag">Titel · SemiCond 500</span><span style="font:500 1.25rem/1.4 'Barlow Semi Condensed',sans-serif">Verfügbarkeit</span></div>
+        <div class="spec-row"><span class="tag">Label · SemiCond 500 · 0.167em</span><span style="font:500 .75rem/2 'Barlow Semi Condensed',sans-serif;letter-spacing:.167em;text-transform:uppercase">Externe Buchung öffnen</span></div>
+        <div class="spec-row"><span class="tag">Body · Barlow 400</span><span style="max-width:52ch;display:block">Das Aarbiwak steht auf dem Grat zwischen Vispertal und Mattertal und ist ein beliebtes Ziel für Ski- und Schneeschuhtouren.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">Radien · 4 / 8 / 16</h2>
+    <div class="radii">
+      <div class="rad" style="border-radius:4px">4 · control</div>
+      <div class="rad" style="border-radius:8px">8 · panel</div>
+      <div class="rad" style="border-radius:16px">16 · dialog</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-title">Komponenten · beide Lichter</h2>
+    <div class="duo">
+      <div class="pane pane--day">
+        <div class="pane-label">Day</div>
+        <div class="comp-row">
+          <button class="btn">Hütte merken</button>
+          <button class="btn btn--ghost">Karte zeigen</button>
+        </div>
+        <div class="comp-row">
+          <span class="chip">SAC-Hütte</span>
+          <span class="chip">17 Plätze</span>
+          <span class="pill pill--free">14 frei</span>
+          <span class="pill pill--closed">zu</span>
+        </div>
+        <div class="comp-row"><span class="field">Hütte, Gipfel oder Ort suchen…</span></div>
+        <div class="comp-row"><a class="link" href="#">sac-cas.ch · Buchung öffnet extern</a></div>
+      </div>
+      <div class="pane pane--night">
+        <div class="pane-label">Night</div>
+        <div class="comp-row">
+          <button class="btn">Hütte merken</button>
+          <button class="btn btn--ghost">Karte zeigen</button>
+        </div>
+        <div class="comp-row">
+          <span class="chip">SAC-Hütte</span>
+          <span class="chip">17 Plätze</span>
+          <span class="pill pill--free">14 frei</span>
+          <span class="pill pill--closed">zu</span>
+        </div>
+        <div class="comp-row"><span class="field">Hütte, Gipfel oder Ort suchen…</span></div>
+        <div class="comp-row"><a class="link" href="#">sac-cas.ch · Buchung öffnet extern</a></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
