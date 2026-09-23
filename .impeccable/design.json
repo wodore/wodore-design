@@ -230,20 +230,20 @@
         },
         {
           "name": "medium",
-          "fill": "#db892a",
+          "fill": "#ea9a37",
           "dayText": "#8a4b1b",
           "nightText": "#f6ad4b"
         },
         {
           "name": "high",
-          "fill": "#a95f1c",
+          "fill": "#c3731f",
           "dayText": "#8a4b1b",
           "nightText": "#ffc064"
         },
         {
           "name": "full",
-          "fill": "#bf211e",
-          "dayText": "#bf211e",
+          "fill": "#961a17",
+          "dayText": "#961a17",
           "nightText": "#f2acab"
         },
         {
@@ -254,7 +254,7 @@
         }
       ],
       "note": "One scale for map pins, drawer badges, icons and month tiles. Never color alone. Replaces the ad-hoc Material hexes in overlay-huts.ts / WdAccommodationDay.vue / months.scss during implementation.",
-      "visualModelCheck": "Machado CVD severity 1.0: protanopia free-low dE 0.024, deuteranopia high-full dE 0.035 -> those pairs never rely on hue alone (icon wedges + counts). free-free_unknown deutan dE 0.05 benign (same family)."
+      "visualModelCheck": "Machado CVD severity 1.0, ladder v2 (lightness-first separation of the critical pair): high-full dE 0.196 deutan / 0.237 protan (amber-600 L0.63 vs negative-700 L0.44); was 0.035 deutan with amber-700/negative-500. Budget taken from low side (low-medium ~0.05, acceptable per product owner). Never hue alone: icon wedges + counts."
     }
   },
   "components": [

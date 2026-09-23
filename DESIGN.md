@@ -174,9 +174,9 @@ existing positive/negative ramps.
 | free | positive-500 #25bf5e | positive-800 #198053 (4.9) | positive-500 #25bf5e (6.9) |
 | free_unknown | muted green #7fab88 | positive-800 #198053 (4.9) | muted green #7fab88 (6.4) |
 | low | amber-300 #f6ad4b | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
-| medium | amber-500 #db892a | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
-| high | amber-700 #a95f1c | amber-800 #8a4b1b (6.7) | amber-200 #ffc064 (10.3) |
-| full | negative-500 #bf211e | negative-500 #bf211e (6.0) | negative-100 #f2acab (9.0) |
+| medium | amber-400 #ea9a37 | amber-800 #8a4b1b (6.7) | amber-300 #f6ad4b (8.8) |
+| high | amber-600 #c3731f | amber-800 #8a4b1b (6.7) | amber-200 #ffc064 (10.3) |
+| full | negative-700 #961a17 | negative-700 #961a17 (8.5) | negative-100 #f2acab (9.0) |
 | unknown | black-100 #575757 | black-100 #575757 (7.2) | white-600 #fcfcfc (16.3) |
 
 All ratios WCAG AA-verified. Hue carries the traffic reading (green →
@@ -190,12 +190,20 @@ family", desaturation says "unverified". Amber would fake a known degree;
 gray would fake "no data" (that is the unknown state). The icon carries
 the same reading: green disc + the X modifier from the unknown icon.
 
-**Visual-model check (Machado CVD simulation, severity 1.0):** under
-protanopia free↔low collapse (ΔE 0.024) and under deuteranopia high↔full
-collapse (ΔE 0.035). These pairs must never rely on hue alone: the
-occupation icons encode degree geometrically (fill wedges 0–100%), and
-pins/badges always pair color with count or label. free↔free_unknown
-under deuteranopia (ΔE 0.05) is benign — both mean "free family".
+**Visual-model check (Machado CVD simulation, severity 1.0):** the
+high↔full pair is decision-critical and is separated primarily by
+lightness (the axis that survives all CVD types): high amber-600 (L 0.63)
+vs full negative-700 (L 0.44) — ΔE 0.196 under deuteranopia, 0.237 under
+protanopia (vs 0.035/0.101 with the original amber-700/negative-500
+anchoring). The freed lightness budget is taken from the low side
+(low↔medium ΔE ~0.05 under CVD), which the product owner deemed
+acceptable: low vs free is not decision-critical. free↔low under
+protanopia (ΔE 0.024) likewise. These pairs still never rely on hue
+alone: the occupation icons encode degree geometrically (fill wedges
+0–100%), and pins/badges always pair color with count or label.
+free↔free_unknown under deuteranopia (ΔE 0.05) is benign — both mean
+"free family". Note: hut "closed" is a hut status, not an occupancy
+state, and keeps negative-500.
 
 Pending code alignment (implementation phase): map pin ramp in
 `src/stores/map/utils/overlay-huts.ts` (currently Material hexes
