@@ -261,7 +261,9 @@ colors exclusively. Never spend green, amber or red on decoration, and
 never show a state by color alone: pair it with a count, label or icon
 shape (color-blind safety).
 
-**The Two-Lights Rule.** Every surface, text and state token is defined for
+**The Two-Lights Rule.** *Approved exception (2026-09-27):* the map
+surface keeps its light basemap and light control chrome in both themes —
+the map is terrain, not UI; night applies around it, not on it. Every surface, text and state token is defined for
 Day and Night together. A component that only works in one lighting
 condition is not done. Light is the default; Night follows the system
 preference until the user chooses.
@@ -314,7 +316,11 @@ sheets get the only "lift" cue via the 20px radius.
 
 ### Named Rules
 **The Tonal Layer Rule.** To raise a surface, step the tone; do not add
-drop shadows — in either lighting condition.
+drop shadows — in either lighting condition. *Approved exception
+(2026-09-27):* chrome floating directly over map imagery (floating action
+buttons, the floating search card, the mobile bottom sheet) may carry one
+soft shadow `0 1px 3px rgba(10,20,15,.2)` — over pale winter tiles tone
+alone does not separate. Panel-on-panel surfaces never shadow.
 
 ## Shapes
 
@@ -327,8 +333,8 @@ charcoal with a white mono variant for Night surfaces.
 ## Components
 
 ### Buttons
-- **Shape:** 6px radius, min-height 2.572em (≥40px targets), uppercase
-  condensed label.
+- **Shape:** 4px radius (control ramp), min-height 2.572em (≥40px targets),
+  uppercase condensed label.
 - **Primary:** Forest Green fill, paper-white label — both themes.
 - **Hover / Focus:** deepen to forest-green-deep; focus ring glacier
   turquoise (deep on Day).
@@ -341,7 +347,8 @@ charcoal with a white mono variant for Night surfaces.
   theme-correct text shades.
 
 ### Cards / Containers
-- **Corner Style:** 6px (dialogs 20px).
+- **Corner Style:** 8px (dialogs 16px) — the canonical ramp is 4/8/16,
+  set by the frontmatter `rounded` tokens.
 - **Background:** day-panel / pine-panel over the map.
 - **Shadow Strategy:** none — tonal separation from the map canvas.
 - **Internal Padding:** Quasar gutter steps (8/16/24px).
