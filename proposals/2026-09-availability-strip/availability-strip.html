@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wodore · S3 Availability Strip · 3 Varianten · Tag &amp; Nacht</title>
+<style>
+  /* ── The Alpine Instrument, Day & Night · DESIGN.md tokens ─────────────── */
+  .theme-day {
+    --page: #f6f9f7; --panel: #fdfefd; --panel-deep: #f6f9f7; --ridge: #dde7e0;
+    --ink: #1c1c1c; --info: #29626b; --info-bright: #153037;
+    --gold: #846a15; --gold-fill: #bfab25; --wash: rgba(0,0,0,0.06);
+  }
+  .theme-night {
+    --page: #0a140f; --panel: #112119; --panel-deep: #0e1b14; --ridge: #1c3629;
+    --ink: #f2f7f4; --info: #9dd9d2; --info-bright: #a9f0d2;
+    --gold: #bfab25; --gold-fill: #bfab25; --wash: rgba(255,255,255,0.10);
+  }
+  /* occupancy scale — fills identical in both themes (Availability Rule) */
+  .st-free { background: #25bf5e; } .st-free-unknown { background: #7fab88; }
+  .st-low { background: #f6ad4b; } .st-medium { background: #ea9a37; }
+  .st-high { background: #c3731f; } .st-full { background: #961a17; }
+  .st-unknown { background: #575757; }
+  .theme-day .tx-free { color: #198053; } .theme-night .tx-free { color: #25bf5e; }
+  .theme-day .tx-low, .theme-day .tx-medium, .theme-day .tx-high { color: #8a4b1b; }
+  .theme-night .tx-low, .theme-night .tx-medium { color: #f6ad4b; }
+  .theme-night .tx-high { color: #ffc064; }
+  .theme-day .tx-full { color: #961a17; } .theme-night .tx-full { color: #f2acab; }
+  .theme-day .tx-unknown { color: #575757; } .theme-night .tx-unknown { color: #fcfcfc; }
+
+  * { box-sizing: border-box; margin: 0; }
+  body { font: 400 15px/1.5 'Barlow', -apple-system, 'Helvetica Neue', sans-serif; background: #e8eee9; color: #1c1c1c; padding: 24px; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
+  .icon { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .lbl { font: 500 .7rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .16667em; text-transform: uppercase; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  h1 { font: 300 2.125rem/1.2 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: -0.008em; }
+  h1 small { display: block; font: 500 .75rem/1.6 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .16667em; text-transform: uppercase; color: #846a15; }
+  .intro { max-width: 1400px; color: #29626b; margin: 8px 0 24px; }
+
+  .variants { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1400px; }
+  @media (max-width: 1100px) { .variants { grid-template-columns: 1fr; } }
+  .variant > h2 { font: 500 .8rem/1.4 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #153037; margin-bottom: 10px; }
+  .variant > h2 em { font-style: normal; color: #29626b; }
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .theme-tag { font: 500 .62rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .16667em; text-transform: uppercase; color: #29626b; margin-bottom: 6px; }
+  .panel { background: var(--panel); border: 1px solid var(--ridge); border-radius: 8px; padding: 16px; color: var(--ink); transition: background-color .3s ease; }
+  .theme-day .panel { background: #fdfefd; }
+  .theme-night .panel { background: #112119; }
+
+  .hut-head { font: 400 1.7rem/1.15 'Barlow Semi Condensed', Barlow, sans-serif; }
+  .hut-meta { font: 500 .72rem/1.6 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--info); margin-bottom: 4px; }
+  .hut-desc { font-size: .86rem; color: var(--ink); opacity: .85; margin: 6px 0 12px; }
+  .hut-desc + .hut-desc { margin-top: -6px; }
+  .weather-row { display: flex; gap: 12px; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--ridge); }
+  .wday { text-align: center; color: var(--info); }
+  .wday .t { font: 500 .78rem/1.4 'Barlow Semi Condensed', Barlow, sans-serif; color: var(--ink); }
+
+  .note { margin-top: 10px; background: #fdfefd; border: 1px solid #dde7e0; border-radius: 8px; padding: 10px 12px; font-size: .82rem; }
+  .note b { font: 500 .66rem/2 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #29626b; display: block; }
+  .note ul { margin: 4px 0 0 16px; padding: 0; }
+  .note li { margin: 2px 0; }
+  .note .pro { color: #198053; } .note .con { color: #8a4b1b; }
+
+  /* ══ VARIANT A — 7-DAY MINI STRIP ══════════════════════════════════ */
+  .a-strip { display: flex; gap: 6px; margin: 4px 0 12px; }
+  .a-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 8px 2px 7px; border-radius: 8px; background: var(--panel-deep); border: 1px solid var(--ridge); min-height: 64px; justify-content: center; }
+  .a-day .d { font: 500 .62rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--info); }
+  .a-day .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .a-day .c { font: 500 .78rem/1 'Barlow Semi Condensed', Barlow, sans-serif; color: var(--ink); }
+  .a-day[aria-pressed="true"] { box-shadow: inset 0 0 0 2px var(--gold-fill); background: var(--wash); border-color: var(--ridge); }
+  .a-day--today .d { color: var(--gold); }
+
+  /* ══ VARIANT B — MONTH HEAT STRIP ══════════════════════════════════ */
+  .b-strip { margin: 4px 0 10px; }
+  .b-title { display: flex; align-items: baseline; gap: 8px; padding-bottom: 6px; }
+  .b-title .m { font: 500 .72rem/1 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+  .b-title .chev { color: var(--info); }
+  .b-cells { display: grid; grid-template-columns: repeat(30, 1fr); gap: 2px; }
+  .b-cell { aspect-ratio: 1; border-radius: 2px; min-width: 0; }
+  .b-cell--today { box-shadow: inset 0 0 0 2px var(--gold-fill); }
+  .b-cell--sel { box-shadow: inset 0 0 0 2px var(--info-bright); }
+  .b-cell--we { border-radius: 999px; }
+  .b-legend { display: flex; gap: 8px; padding-top: 6px; color: var(--info); font-size: .62rem; align-items: center; flex-wrap: wrap; }
+  .b-legend .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 3px; vertical-align: -1px; }
+  .b-summary { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--ridge); border-radius: 4px; background: var(--panel-deep); font: 500 .74rem/1.3 'Barlow Semi Condensed', Barlow, sans-serif; letter-spacing: .04em; }
+  .b-summary .icon { color: var(--gold); }
+  .b-summary .txt-free { font-weight: 500; }
+
+  /* ══ VARIANT C — SUMMARY ROW ONLY ══════════════════════════════════ */
+  .c-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin: 4px 0 10px; padding: 10px 12px; border: 1px solid var(--ridge); border-radius: 8px; background: var(--panel-deep); font: 400 .88rem/1.5 'Barlow', sans-serif; }
+  .c-item { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
+  .c-item .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .c-item .n { font-weight: 500; }
+  .c-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 14px; border-radius: 4px; background: #346751; color: #f2f7f4; margin-left: auto; }
+  .c-btn:hover { background: #224e3b; }
+  .c-btn .icon { color: #a9f0d2; }
+</style>
+</head>
+<body>
+<h1><small>S3 Proposal · Availability Strip · 2026-09</small>Verfügbarkeit führt den Hütten-Body — drei Varianten, Tag &amp; Nacht</h1>
+<p class="intro">Problem: Verfügbarkeit ist das Kernsignal des Produkts, liegt aber auf der Hütten-Detailseite einen Tap tief (Datums-Chip), während das Wetter den Body anführt. Alle Varianten setzen den Verfügbarkeits-Block direkt unter die Beschreibung — mit der 7-stufigen Skala (frei → voll → unbekannt), Bedienung uppercase Barlow Semi Condensed, Inhalt sentence case.</p>
+
+<div class="variants">
+
+  <!-- ═══ VARIANT A ═══ -->
+  <section class="variant">
+    <h2>A · <em>7-DAY MINI STRIP</em> — sieben Tageskacheln unter der Beschreibung</h2>
+    <div class="panels">
+      <div>
+        <p class="theme-tag">Tag</p>
+        <div class="theme-day">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#29626b">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="a-strip" role="group" aria-label="Verfügbarkeit der nächsten 7 Tage">
+              <button class="a-day a-day--today"><span class="d">Fr</span><span class="dot st-free" aria-hidden="true"></span><span class="c num">14</span></button>
+              <button class="a-day" aria-pressed="true"><span class="d">Sa</span><span class="dot st-low" aria-hidden="true"></span><span class="c num">4</span></button>
+              <button class="a-day"><span class="d">So</span><span class="dot st-medium" aria-hidden="true"></span><span class="c num">2</span></button>
+              <button class="a-day"><span class="d">Mo</span><span class="dot st-free-unknown" aria-hidden="true"></span><span class="c">?</span></button>
+              <button class="a-day"><span class="d">Di</span><span class="dot st-free" aria-hidden="true"></span><span class="c num">11</span></button>
+              <button class="a-day"><span class="d">Mi</span><span class="dot st-high" aria-hidden="true"></span><span class="c num">1</span></button>
+              <button class="a-day"><span class="d">Do</span><span class="dot st-full" aria-hidden="true"></span><span class="c">0</span></button>
+            </div>
+            <p style="font-size:.78rem;color:#29626b;margin:-6px 0 10px">27. Sep – 3. Okt · Tippen öffnet den Kalender</p>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="theme-tag">Nacht</p>
+        <div class="theme-night">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#9dd9d2">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="a-strip" role="group" aria-label="Verfügbarkeit der nächsten 7 Tage">
+              <button class="a-day a-day--today"><span class="d">Fr</span><span class="dot st-free" aria-hidden="true"></span><span class="c num">14</span></button>
+              <button class="a-day" aria-pressed="true"><span class="d">Sa</span><span class="dot st-low" aria-hidden="true"></span><span class="c num">4</span></button>
+              <button class="a-day"><span class="d">So</span><span class="dot st-medium" aria-hidden="true"></span><span class="c num">2</span></button>
+              <button class="a-day"><span class="d">Mo</span><span class="dot st-free-unknown" aria-hidden="true"></span><span class="c">?</span></button>
+              <button class="a-day"><span class="d">Di</span><span class="dot st-free" aria-hidden="true"></span><span class="c num">11</span></button>
+              <button class="a-day"><span class="d">Mi</span><span class="dot st-high" aria-hidden="true"></span><span class="c num">1</span></button>
+              <button class="a-day"><span class="d">Do</span><span class="dot st-full" aria-hidden="true"></span><span class="c">0</span></button>
+            </div>
+            <p style="font-size:.78rem;color:#9dd9d2;margin:-6px 0 10px">27. Sep – 3. Okt · Tippen öffnet den Kalender</p>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      <b>Pros / Cons</b>
+      <ul>
+        <li class="pro">+ Die Go/No-Go-Frage («Wann passt meine Gruppe?») ist auf einen Blick beantwortet.</li>
+        <li class="pro">+ Selected Day = tonale Füllung + Inset-Goldring (Beam, kein Wash); Farbe nie allein — Dot + Zähler.</li>
+        <li class="pro">+ Nutzt alle sieben Skalen-Zustände inkl. free_unknown direkt im Produktkontext.</li>
+        <li class="con">− ~64&nbsp;px zusätzliche Höhe im Panel; auf kleinen Screens drängt es das Wetter.</li>
+        <li class="con">− 7 Tage reichen für Wochenendplanung, nicht für Ferienslots — Kalender bleibt nötig.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ VARIANT B ═══ -->
+  <section class="variant">
+    <h2>B · <em>MONTH HEAT STRIP</em> — kompakter Monatsstreifen + Next-Free-Zeile</h2>
+    <div class="panels">
+      <div>
+        <p class="theme-tag">Tag</p>
+        <div class="theme-day">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#29626b">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="b-strip">
+              <div class="b-title">
+                <span class="m">Oktober</span>
+                <button class="chev" aria-label="Vormonat"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+                <button class="chev" aria-label="Folgemonat"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+              </div>
+              <div class="b-cells" role="img" aria-label="Belegung Oktober, Tag für Tag">
+                <!-- 30 days; dots: state per day, today=27., weekends round, selected=3. -->
+                <span class="b-cell st-free-unknown"></span><span class="b-cell b-cell--we st-low"></span><span class="b-cell b-cell--we st-medium"></span>
+                <span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we b-cell--sel st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-full"></span><span class="b-cell st-full"></span><span class="b-cell st-high"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we st-medium"></span><span class="b-cell b-cell--we st-high"></span>
+                <span class="b-cell st-full"></span><span class="b-cell st-unknown"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-medium"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we b-cell--today st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-high"></span><span class="b-cell st-full"></span>
+              </div>
+              <p class="b-legend lbl">
+                <span><span class="dot st-free"></span>frei</span>
+                <span><span class="dot st-low"></span>viel</span>
+                <span><span class="dot st-medium"></span>mittel</span>
+                <span><span class="dot st-high"></span>wenig</span>
+                <span><span class="dot st-full"></span>voll</span>
+                <span><span class="dot st-unknown"></span>?</span>
+              </p>
+            </div>
+            <div class="b-summary">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span>Nächste freie Nacht: <span class="txt-free num">Fr 3. Okt · 4 Betten</span></span>
+            </div>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="theme-tag">Nacht</p>
+        <div class="theme-night">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#9dd9d2">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="b-strip">
+              <div class="b-title">
+                <span class="m">Oktober</span>
+                <button class="chev" aria-label="Vormonat"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+                <button class="chev" aria-label="Folgemonat"><svg class="icon" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+              </div>
+              <div class="b-cells" role="img" aria-label="Belegung Oktober, Tag für Tag">
+                <span class="b-cell st-free-unknown"></span><span class="b-cell b-cell--we st-low"></span><span class="b-cell b-cell--we st-medium"></span>
+                <span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we b-cell--sel st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-full"></span><span class="b-cell st-full"></span><span class="b-cell st-high"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we st-medium"></span><span class="b-cell b-cell--we st-high"></span>
+                <span class="b-cell st-full"></span><span class="b-cell st-unknown"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-medium"></span><span class="b-cell st-free"></span><span class="b-cell st-free"></span><span class="b-cell b-cell--we b-cell--today st-free"></span><span class="b-cell b-cell--we st-low"></span>
+                <span class="b-cell st-high"></span><span class="b-cell st-full"></span>
+              </div>
+              <p class="b-legend lbl">
+                <span><span class="dot st-free"></span>frei</span>
+                <span><span class="dot st-low"></span>viel</span>
+                <span><span class="dot st-medium"></span>mittel</span>
+                <span><span class="dot st-high"></span>wenig</span>
+                <span><span class="dot st-full"></span>voll</span>
+                <span><span class="dot st-unknown"></span>?</span>
+              </p>
+            </div>
+            <div class="b-summary">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              <span>Nächste freie Nacht: <span class="txt-free num">Fr 3. Okt · 4 Betten</span></span>
+            </div>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      <b>Pros / Cons</b>
+      <ul>
+        <li class="pro">+ Ganzer Monat als Heatmap: Muster (Wochenenden voll, Lücken Mitte Woche) sofort erkennbar.</li>
+        <li class="pro">+ Today-Inset in Gold, Wochenenden als runde Zellen — Instrument-Lesart ohne extra Text.</li>
+        <li class="pro">+ «Next free»-Zeile liefert die Entscheidung, der Streifen die Planungstiefe.</li>
+        <li class="con">− Zellen sind auf Mobile < 8&nbsp;px klein; Tap-Ziele brauchen mindestens den gestreckten Kalender.</li>
+        <li class="con">− Farbenfrohster Block der drei Varianten — Gefahr, dass die Karte des Monats die Hierarchie frisst.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ═══ VARIANT C ═══ -->
+  <section class="variant">
+    <h2>C · <em>SUMMARY ROW ONLY</em> — eine Zeile «Nächste freie Nächte» + Kalender-Button</h2>
+    <div class="panels">
+      <div>
+        <p class="theme-tag">Tag</p>
+        <div class="theme-day">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#29626b">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="c-row">
+              <span class="c-item" title="frei"><span class="dot st-free" aria-hidden="true"></span><span class="num">Fr 3.10</span><span class="n tx-free num">(4)</span></span>
+              <span class="c-item" title="wenig frei"><span class="dot st-low" aria-hidden="true"></span><span class="num">Sa 4.10</span><span class="n tx-low num">(2)</span></span>
+              <span class="c-item" title="frei, Zahl unklar"><span class="dot st-free-unknown" aria-hidden="true"></span><span class="num">Mi 8.10</span><span class="n tx-free num">(6+)</span></span>
+              <button class="c-btn lbl">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Kalender
+              </button>
+            </div>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="theme-tag">Nacht</p>
+        <div class="theme-night">
+          <div class="panel">
+            <p class="hut-meta">SAC · Wallis</p>
+            <h2 class="hut-head">Aarbiwak <span class="num" style="font-size:1.1rem;color:#9dd9d2">▲ 2731 m</span></h2>
+            <p class="hut-desc">Gemütlicher Stützpunkt am Fuße des Aletschhorns, winterbewirtschaftet ab Dezember.</p>
+            <div class="c-row">
+              <span class="c-item" title="frei"><span class="dot st-free" aria-hidden="true"></span><span class="num">Fr 3.10</span><span class="n tx-free num">(4)</span></span>
+              <span class="c-item" title="wenig frei"><span class="dot st-low" aria-hidden="true"></span><span class="num">Sa 4.10</span><span class="n tx-low num">(2)</span></span>
+              <span class="c-item" title="frei, Zahl unklar"><span class="dot st-free-unknown" aria-hidden="true"></span><span class="num">Mi 8.10</span><span class="n tx-free num">(6+)</span></span>
+              <button class="c-btn lbl">
+                <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+                Kalender
+              </button>
+            </div>
+            <div class="weather-row">
+              <span class="wday lbl">Fr<br><span class="t">☀ 10°</span></span>
+              <span class="wday lbl">Sa<br><span class="t">⛅ 8°</span></span>
+              <span class="wday lbl">So<br><span class="t">🌧 6°</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note">
+      <b>Pros / Cons</b>
+      <ul>
+        <li class="pro">+ Kompakteste Lösung (~48&nbsp;px) — Wetter, Wegzeit und Co. verlieren keinen Platz.</li>
+        <li class="pro">+ Antwortet trotzdem auf die Kernfrage: Datum + Zustand + Anzahl, nie Farbe allein.</li>
+        <li class="pro">+ Forestry-Button (forest-green, 4-px-Radius, uppercase Label) als klarer nächster Schritt.</li>
+        <li class="con">− Drei Stichpunkte sind keine Trendsuche — «Wann ist Anfangs Oktober frei?» bleibt im Kalender.</li>
+        <li class="con">− Zeile kann bei langen Datumsformaten (fr/it) umbrechen; Layout muss das verkraften.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
